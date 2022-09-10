@@ -76,4 +76,4 @@ class DataframeAnalysis:
 if __name__ == "__main__":
 
     dataframe = DataframeAnalysis()
-    dataframe.get_list_of_teams("segunda_diviion", 1990)
+    dataframe.get_list_of_teams("segunda_division", 49837453)
