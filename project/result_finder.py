@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
     PATH = r"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results"
     result_finder = ResultFinder()
-    result_finder.get_results("ligue_2", 2000)
+    result_finder.get_results("ligue_2", 200)
 
 
  

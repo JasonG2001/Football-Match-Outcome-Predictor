@@ -16,7 +16,6 @@ class DataframeAnalysis:
 
             df = pd.read_csv(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{football_league}/{result}")
 
-            print(df)
             return df
 
         except FileNotFoundError:
@@ -45,7 +44,6 @@ class DataframeAnalysis:
 
                 list_of_teams = set(list_of_teams_with_duplicates)
 
-                print(list_of_teams)
                 return list_of_teams
 
             else:
@@ -58,7 +56,6 @@ class DataframeAnalysis:
                 
                 list_of_teams = set(teams)
 
-                print(list_of_teams)
                 return(list_of_teams)
 
         except FileNotFoundError:
@@ -68,12 +65,23 @@ class DataframeAnalysis:
         except ValueError:
 
             print("No results for the specified year")
-            
 
     
+    def get_number_of_teams(self, football_league: str, year: int = None):
+
+        list_of_teams: list[str] = self.get_list_of_teams(football_league, year)
+
+        try:
+            
+            return len(list_of_teams)
+
+        except:
+
+            print("No record for this league")
+        
 
 
 if __name__ == "__main__":
 
     dataframe = DataframeAnalysis()
-    dataframe.get_list_of_teams("segunda_division", 49837453)
+    print(dataframe.get_number_of_teams("segunda_liga", 2000))
