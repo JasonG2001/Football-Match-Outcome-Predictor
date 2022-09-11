@@ -79,7 +79,7 @@ class DataframeAnalysis:
 
             print("No record for this league")
 
-    def get_winner(self, football_league: str, year: int, home_team: str, away_team: str):
+    def get_winner(self, football_league: str, year: int, home_team: str, away_team: str) -> str:
 
         df = self.get_dataframe(football_league, year) # returns df
 
@@ -103,6 +103,29 @@ class DataframeAnalysis:
 
                 return "draw"
 
+    
+    def get_number_of_home_wins(self, football_league: str, year: int, team):
+
+        df = self.get_dataframe(football_league, year)
+
+        data = df[df["Home_Team"] == team]
+
+        home_wins: int = 0
+
+        for index, row in data.iterrows():
+
+            result: str = row["Result"]
+            home_team_score = int(result[0])
+            away_team_score = int(result[2])
+
+            if home_team_score > away_team_score:
+
+                home_wins += 1
+
+        return home_wins
+
+
+
             
         
 
@@ -110,4 +133,4 @@ class DataframeAnalysis:
 if __name__ == "__main__":
 
     dataframe = DataframeAnalysis()
-    print(dataframe.get_winner("championship", 1990, "Newcastle", "Leeds United"))
+    print(dataframe.get_number_of_home_wins("premier_league", 2021, "Tottenham Hotspur"))
