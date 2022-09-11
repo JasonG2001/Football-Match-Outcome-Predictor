@@ -78,10 +78,36 @@ class DataframeAnalysis:
         except:
 
             print("No record for this league")
+
+    def get_winner(self, football_league: str, year: int, home_team: str, away_team: str):
+
+        df = self.get_dataframe(football_league, year) # returns df
+
+        data = df[(df["Home_Team"] == home_team) & (df["Away_Team"] == away_team)]
+
+        for index, row in data.iterrows():
+            
+            result: str = row["Result"]
+            home_team_score = int(result[0])
+            away_team_score = int(result[2])
+
+            if home_team_score > away_team_score:
+
+                return home_team
+
+            elif home_team_score < away_team_score:
+
+                return away_team
+
+            else:
+
+                return "draw"
+
+            
         
 
 
 if __name__ == "__main__":
 
     dataframe = DataframeAnalysis()
-    print(dataframe.get_number_of_teams("segunda_liga", 2000))
+    print(dataframe.get_winner("championship", 1990, "Newcastle", "Leeds United"))
