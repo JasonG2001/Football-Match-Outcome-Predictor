@@ -7,6 +7,7 @@ class DataframeAnalysis:
     def __init__(self):
 
         self.result_finder = ResultFinder()
+        self.INDEX_OF_AWAY_TEAM = 2
 
     def get_dataframe(self, football_league: str, year: int):
         
@@ -89,7 +90,7 @@ class DataframeAnalysis:
             
             result: str = row["Result"]
             home_team_score = int(result[0])
-            away_team_score = int(result[2])
+            away_team_score = int(result[self.INDEX_OF_AWAY_TEAM])
 
             if home_team_score > away_team_score:
 
@@ -104,7 +105,7 @@ class DataframeAnalysis:
                 return "draw"
 
     
-    def get_home_wins(self, football_league: str, year: int, team: str):
+    def get_home_wins(self, football_league: str, year: int, team: str) -> int:
 
         df = self.get_dataframe(football_league, year)
 
@@ -116,7 +117,7 @@ class DataframeAnalysis:
 
             result: str = row["Result"]
             home_team_score = int(result[0])
-            away_team_score = int(result[2])
+            away_team_score = int(result[self.INDEX_OF_AWAY_TEAM])
 
             if home_team_score > away_team_score:
 
@@ -125,7 +126,7 @@ class DataframeAnalysis:
         return home_wins
 
     
-    def get_away_wins(self, football_league: str, year: int, team: str):
+    def get_away_wins(self, football_league: str, year: int, team: str) -> int:
 
         df = self.get_dataframe(football_league, year)
 
@@ -137,7 +138,7 @@ class DataframeAnalysis:
 
             result: str = row["Result"]
             home_team_score = int(result[0])
-            away_team_score = int(result[2])
+            away_team_score = int(result[self.INDEX_OF_AWAY_TEAM])
 
             if home_team_score < away_team_score:
 
@@ -145,7 +146,14 @@ class DataframeAnalysis:
 
         return away_wins
 
+    def get_total_wins(self, football_league: str, year: int, team: str):
 
+        home_wins: int = self.get_home_wins(football_league, year, team)
+        away_wins: int = self.get_away_wins(football_league, year, team)
+
+        total_wins: int = home_wins + away_wins
+
+        return total_wins
 
             
         
@@ -154,4 +162,4 @@ class DataframeAnalysis:
 if __name__ == "__main__":
 
     dataframe = DataframeAnalysis()
-    print(dataframe.get_away_wins("premier_league", 2021, "Tottenham Hotspur"))
+    print(dataframe.get_total_wins("premier_league", 2021, "Chelsea"))
