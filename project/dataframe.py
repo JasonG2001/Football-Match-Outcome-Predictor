@@ -155,11 +155,23 @@ class DataframeAnalysis:
 
         return total_wins
 
-            
+    def get_all_team_wins(self, football_league: str, year: int) -> dict:
+
+        list_of_teams: list[str] = self.get_list_of_teams(football_league, year)
+
+        win_count_dictionary: dict[str:str] = {}
+    
+        for team in list_of_teams:
+
+            total_wins: int = self.get_total_wins(football_league, year, team)
+
+            win_count_dictionary[team] = total_wins
+
+        return win_count_dictionary
         
 
 
 if __name__ == "__main__":
 
     dataframe = DataframeAnalysis()
-    print(dataframe.get_total_wins("premier_league", 2021, "Chelsea"))
+    print(dataframe.get_all_team_wins("premier_league", 2021))
