@@ -179,7 +179,7 @@ class DataframeAnalysis:
 
         list_of_years: list[int] = self.result_finder.get_list_of_years(football_league)
 
-        dictionary_of_year_to_leaderboard = {} 
+        dictionary_of_year_to_leaderboard: dict = {} 
         list_of_leaderboards: list[dict[str:int]] = []
 
         for year in list_of_years:
