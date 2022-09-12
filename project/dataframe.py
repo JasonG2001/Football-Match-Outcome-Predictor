@@ -9,6 +9,7 @@ class DataframeAnalysis:
         self.result_finder = ResultFinder()
         self.INDEX_OF_AWAY_TEAM = 2
 
+
     def get_dataframe(self, football_league: str, year: int):
         
         result: str = self.result_finder.get_results(football_league, year)
@@ -22,6 +23,7 @@ class DataframeAnalysis:
         except FileNotFoundError:
 
             print("The football league or annual results cannot be found. Please check the league name is correct or year is correct.")
+
 
     def get_list_of_teams(self, football_league: str, year: int = None) -> list:
 
@@ -79,6 +81,7 @@ class DataframeAnalysis:
         except:
 
             print("No record for this league")
+
 
     def get_winner(self, football_league: str, year: int, home_team: str, away_team: str) -> str:
 
@@ -146,6 +149,7 @@ class DataframeAnalysis:
 
         return away_wins
 
+
     def get_total_wins(self, football_league: str, year: int, team: str):
 
         home_wins: int = self.get_home_wins(football_league, year, team)
@@ -155,7 +159,8 @@ class DataframeAnalysis:
 
         return total_wins
 
-    def get_all_team_wins(self, football_league: str, year: int) -> dict:
+
+    def get_leaderboard(self, football_league: str, year: int) -> dict:
 
         list_of_teams: list[str] = self.get_list_of_teams(football_league, year)
 
@@ -167,11 +172,28 @@ class DataframeAnalysis:
 
             win_count_dictionary[team] = total_wins
 
-        return win_count_dictionary
-        
+        return dict(sorted(win_count_dictionary.items(), key=lambda x:x[1], reverse=True))
+
+    
+    def get_all_leaderboards(self, football_league: str) -> list:
+
+        list_of_years: list[int] = self.result_finder.get_list_of_years(football_league)
+
+        dictionary_of_year_to_leaderboard = {} 
+        list_of_leaderboards: list[dict[str:int]] = []
+
+        for year in list_of_years:
+
+            leaderboard: dict[str:int] = self.get_leaderboard(football_league, year)
+
+            dictionary_of_year_to_leaderboard[year] = leaderboard
+
+            list_of_leaderboards.append(dictionary_of_year_to_leaderboard)
+
+        return list_of_leaderboards
 
 
 if __name__ == "__main__":
 
     dataframe = DataframeAnalysis()
-    print(dataframe.get_all_team_wins("premier_league", 2021))
+    print(dataframe.get_all_leaderboards("premier_league"))
