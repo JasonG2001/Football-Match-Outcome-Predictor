@@ -159,6 +159,20 @@ class DataframeAnalysis:
 
         return total_wins
 
+    def get_total_win_since_beginning(self, football_league: str, team: str) -> int:
+
+        list_of_years: list[int] = self.result_finder.get_list_of_years(football_league)
+
+        total_wins_over_all_years: int = 0
+
+        for year in list_of_years:
+
+            total_wins: int = self.get_total_wins(football_league, year, team)
+
+            total_wins_over_all_years += total_wins
+
+        return total_wins_over_all_years
+
 
     def get_leaderboard(self, football_league: str, year: int) -> dict:
 
@@ -196,4 +210,4 @@ class DataframeAnalysis:
 if __name__ == "__main__":
 
     dataframe = DataframeAnalysis()
-    print(dataframe.get_all_leaderboards("premier_league"))
+    print(dataframe.get_total_win_since_beginning("premier_league", "Aston Villa"))
