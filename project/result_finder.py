@@ -2,7 +2,7 @@ import os
 
 class ResultFinder:
 
-    def __init__(self, football_league):
+    def __init__(self, football_league: str):
 
         self.football_league: str = football_league
         self.INDEX_OF_THOUSANDS: int = 8

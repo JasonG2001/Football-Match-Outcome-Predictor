@@ -4,19 +4,20 @@ import pandas as pd
 
 class DataframeAnalysis:
 
-    def __init__(self):
+    def __init__(self, football_league: str):
 
-        self.result_finder = ResultFinder()
+        self.football_league: str = football_league
+        self.result_finder = ResultFinder(football_league)
         self.INDEX_OF_AWAY_TEAM = 2
 
 
-    def get_dataframe(self, football_league: str, year: int):
+    def get_dataframe(self, year: int):
         
-        result: str = self.result_finder.get_results(football_league, year)
+        result: str = self.result_finder.get_results(year)
             
         try:
 
-            df = pd.read_csv(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{football_league}/{result}")
+            df = pd.read_csv(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{self.football_league}/{result}")
 
             return df
 
@@ -25,13 +26,13 @@ class DataframeAnalysis:
             print("The football league or annual results cannot be found. Please check the league name is correct or year is correct.")
 
 
-    def get_list_of_teams(self, football_league: str, year: int = None) -> list:
+    def get_list_of_teams(self, year: int = None) -> list:
 
         try:
 
             if year == None: # Gets list of teams in the whole league over all years
                 
-                self.result_finder.go_to_football_league(football_league)
+                self.result_finder.go_to_football_league()
 
                 annual_results: list[str] = os.listdir(".")
 
@@ -51,7 +52,7 @@ class DataframeAnalysis:
 
             else:
                 
-                annual_result = self.result_finder.get_results(football_league, year)
+                annual_result = self.result_finder.get_results(year)
 
                 df = pd.read_csv(annual_result)
 
@@ -70,9 +71,9 @@ class DataframeAnalysis:
             print("No results for the specified year")
 
     
-    def get_number_of_teams(self, football_league: str, year: int = None):
+    def get_number_of_teams(self, year: int = None):
 
-        list_of_teams: list[str] = self.get_list_of_teams(football_league, year)
+        list_of_teams: list[str] = self.get_list_of_teams(year)
 
         try:
             
@@ -83,9 +84,9 @@ class DataframeAnalysis:
             print("No record for this league")
 
 
-    def get_winner(self, football_league: str, year: int, home_team: str, away_team: str) -> str:
+    def get_winner(self, year: int, home_team: str, away_team: str) -> str:
 
-        df = self.get_dataframe(football_league, year) # returns df
+        df = self.get_dataframe(year) # returns df
 
         data = df[(df["Home_Team"] == home_team) & (df["Away_Team"] == away_team)]
 
@@ -108,9 +109,9 @@ class DataframeAnalysis:
                 return "draw"
 
     
-    def get_home_wins(self, football_league: str, year: int, team: str) -> int:
+    def get_home_wins(self, year: int, team: str) -> int:
 
-        df = self.get_dataframe(football_league, year)
+        df = self.get_dataframe(year)
 
         data = df[df["Home_Team"] == team]
 
@@ -129,9 +130,9 @@ class DataframeAnalysis:
         return home_wins
 
     
-    def get_away_wins(self, football_league: str, year: int, team: str) -> int:
+    def get_away_wins(self, year: int, team: str) -> int:
 
-        df = self.get_dataframe(football_league, year)
+        df = self.get_dataframe(year)
 
         data = df[df["Away_Team"] == team]
 
@@ -150,24 +151,24 @@ class DataframeAnalysis:
         return away_wins
 
 
-    def get_total_wins(self, football_league: str, year: int, team: str):
+    def get_total_wins(self, year: int, team: str) -> int:
 
-        home_wins: int = self.get_home_wins(football_league, year, team)
-        away_wins: int = self.get_away_wins(football_league, year, team)
+        home_wins: int = self.get_home_wins(year, team)
+        away_wins: int = self.get_away_wins(year, team)
 
         total_wins: int = home_wins + away_wins
 
         return total_wins
 
-    def get_total_win_since_beginning(self, football_league: str, team: str) -> int:
+    def get_total_win_since_beginning(self, team: str) -> int:
 
-        list_of_years: list[int] = self.result_finder.get_list_of_years(football_league)
+        list_of_years: list[int] = self.result_finder.get_list_of_years()
 
         total_wins_over_all_years: int = 0
 
         for year in list_of_years:
 
-            total_wins: int = self.get_total_wins(football_league, year, team)
+            total_wins: int = self.get_total_wins(year, team)
 
             total_wins_over_all_years += total_wins
 
@@ -224,5 +225,7 @@ class DataframeAnalysis:
 
 if __name__ == "__main__":
 
-    dataframe = DataframeAnalysis()
-    print(dataframe.get_all_time_leaderboard("premier_league"))
+    dataframe1 = DataframeAnalysis("premier_league")
+    dataframe2 = DataframeAnalysis("championship")
+    print(dataframe1.get_total_win_since_beginning("Newcastle"))
+    print(dataframe2.get_total_win_since_beginning("Portsmouth"))  
