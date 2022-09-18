@@ -206,8 +206,23 @@ class DataframeAnalysis:
 
         return list_of_leaderboards
 
+    
+    def get_all_time_leaderboard(self, football_league: str) -> dict:
+
+        list_of_teams: list[str] = self.get_list_of_teams(football_league)
+
+        win_count_dictionary: dict[str:str] = {}
+
+        for team in list_of_teams:
+
+            total_wins: int = self.get_total_win_since_beginning(football_league, team)
+
+            win_count_dictionary[team] = total_wins
+
+        return dict(sorted(win_count_dictionary.items(), key=lambda x:x[1], reverse=True))
+
 
 if __name__ == "__main__":
 
     dataframe = DataframeAnalysis()
-    print(dataframe.get_total_win_since_beginning("premier_league", "Aston Villa"))
+    print(dataframe.get_all_time_leaderboard("premier_league"))
