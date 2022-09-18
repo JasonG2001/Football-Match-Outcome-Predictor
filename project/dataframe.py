@@ -175,31 +175,31 @@ class DataframeAnalysis:
         return total_wins_over_all_years
 
 
-    def get_leaderboard(self, football_league: str, year: int) -> dict:
+    def get_leaderboard(self, year: int) -> dict:
 
-        list_of_teams: list[str] = self.get_list_of_teams(football_league, year)
+        list_of_teams: list[str] = self.get_list_of_teams(year)
 
         win_count_dictionary: dict[str:str] = {}
     
         for team in list_of_teams:
 
-            total_wins: int = self.get_total_wins(football_league, year, team)
+            total_wins: int = self.get_total_wins(year, team)
 
             win_count_dictionary[team] = total_wins
 
         return dict(sorted(win_count_dictionary.items(), key=lambda x:x[1], reverse=True))
 
     
-    def get_all_leaderboards(self, football_league: str) -> list:
+    def get_all_leaderboards(self) -> list:
 
-        list_of_years: list[int] = self.result_finder.get_list_of_years(football_league)
+        list_of_years: list[int] = self.result_finder.get_list_of_years()
 
         dictionary_of_year_to_leaderboard: dict = {} 
         list_of_leaderboards: list[dict[str:int]] = []
 
         for year in list_of_years:
 
-            leaderboard: dict[str:int] = self.get_leaderboard(football_league, year)
+            leaderboard: dict[str:int] = self.get_leaderboard(year)
 
             dictionary_of_year_to_leaderboard[year] = leaderboard
 
@@ -208,15 +208,15 @@ class DataframeAnalysis:
         return list_of_leaderboards
 
     
-    def get_all_time_leaderboard(self, football_league: str) -> dict:
+    def get_all_time_leaderboard(self) -> dict:
 
-        list_of_teams: list[str] = self.get_list_of_teams(football_league)
+        list_of_teams: list[str] = self.get_list_of_teams()
 
         win_count_dictionary: dict[str:str] = {}
 
         for team in list_of_teams:
 
-            total_wins: int = self.get_total_win_since_beginning(football_league, team)
+            total_wins: int = self.get_total_win_since_beginning(team)
 
             win_count_dictionary[team] = total_wins
 
@@ -227,5 +227,5 @@ if __name__ == "__main__":
 
     dataframe1 = DataframeAnalysis("premier_league")
     dataframe2 = DataframeAnalysis("championship")
-    print(dataframe1.get_total_win_since_beginning("Newcastle"))
-    print(dataframe2.get_total_win_since_beginning("Portsmouth"))  
+    print(dataframe1.get_all_time_leaderboard())
+    print(dataframe2.get_all_time_leaderboard())  
