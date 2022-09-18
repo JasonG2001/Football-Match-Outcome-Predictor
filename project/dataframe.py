@@ -1,6 +1,7 @@
 from result_finder import ResultFinder
 import os
 import pandas as pd
+import pickle
 
 class DataframeAnalysis:
 
@@ -24,6 +25,13 @@ class DataframeAnalysis:
         except FileNotFoundError:
 
             print("The football league or annual results cannot be found. Please check the league name is correct or year is correct.")
+
+
+    def get_elo(self) -> dict:
+
+        elo = pickle.load(open('/home/jason2001/Football-Match-Outcome-Predictor/project/elo_dict.pkl', 'rb'))
+
+        return elo
 
 
     def get_list_of_teams(self, year: int = None) -> list:
