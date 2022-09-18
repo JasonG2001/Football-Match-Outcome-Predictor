@@ -2,26 +2,27 @@ import os
 
 class ResultFinder:
 
-    def __init__(self):
+    def __init__(self, football_league):
 
+        self.football_league: str = football_league
         self.INDEX_OF_THOUSANDS: int = 8
         self.INDEX_OF_ONES: int = 12
 
-    def go_to_football_league(self, football_league: str) -> None:
+    def go_to_football_league(self) -> None:
 
         try:
 
-            os.chdir(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{football_league}")
+            os.chdir(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{self.football_league}")
 
         except FileNotFoundError:
 
             print("This football league results cannot be found, please check the spelling.")
 
-    def get_results(self, football_league: str, year: int) -> str:
+    def get_results(self, year: int) -> str:
 
-        self.go_to_football_league(football_league)
+        self.go_to_football_league()
 
-        list_of_results: list[str] = os.listdir(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{football_league}")
+        list_of_results: list[str] = os.listdir(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{self.football_league}")
 
         for annual_result in list_of_results:
 
@@ -30,11 +31,11 @@ class ResultFinder:
                 return annual_result
 
             
-    def get_list_of_years(self, football_league: str):
+    def get_list_of_years(self) -> list:
         
-        self.go_to_football_league(football_league)
+        self.go_to_football_league()
 
-        list_of_results: list[str] = os.listdir(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{football_league}")
+        list_of_results: list[str] = os.listdir(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{self.football_league}")
 
         years: list[int] = []
 
@@ -52,8 +53,8 @@ class ResultFinder:
 
 if __name__ == "__main__":
 
-    result_finder = ResultFinder()
-    print(result_finder.get_list_of_years("ligue_2"))
+    result_finder = ResultFinder("premier_league")
+    print(result_finder.get_list_of_years())
 
 
  
