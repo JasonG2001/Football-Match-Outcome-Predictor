@@ -102,8 +102,8 @@ class DataframeAnalysis:
 
         for i, score in enumerate(result):
             
-            home_team_score = score[0]
-            away_team_score = score[self.INDEX_OF_AWAY_TEAM]
+            home_team_score = int(score[0])
+            away_team_score = int(score[self.INDEX_OF_AWAY_TEAM])
 
             if home_team_score > away_team_score:
 
@@ -130,8 +130,8 @@ class DataframeAnalysis:
 
         for i, score in enumerate(result):
 
-            home_team_score = score[0]
-            away_team_score = score[self.INDEX_OF_AWAY_TEAM]
+            home_team_score = int(score[0])
+            away_team_score = int(score[self.INDEX_OF_AWAY_TEAM])
 
             if home_team_score > away_team_score:
 
@@ -152,8 +152,8 @@ class DataframeAnalysis:
 
         for i, score in enumerate(result):
 
-            home_team_score = score[0]
-            away_team_score = score[self.INDEX_OF_AWAY_TEAM]
+            home_team_score = int(score[0])
+            away_team_score = int(score[self.INDEX_OF_AWAY_TEAM])
 
             if home_team_score < away_team_score:
 
@@ -170,6 +170,27 @@ class DataframeAnalysis:
         total_wins: int = home_wins + away_wins
 
         return total_wins
+
+    
+    def get_home_total_points(self, year: int, team: str) -> int:
+
+        df = self.get_dataframe(year)
+
+        data = df[df["Home_Team"] == team]
+
+        home_points: int = 0
+
+        result = data.loc[:, "Result"]
+
+        for i, score in enumerate(result):
+
+            goals = int(score[0])
+
+            home_points += goals
+
+        return home_points
+
+
 
     def get_total_win_since_beginning(self, team: str) -> int:
 
@@ -239,3 +260,4 @@ if __name__ == "__main__":
     dataframe1 = DataframeAnalysis("premier_league")
     dataframe2 = DataframeAnalysis("championship")
     print(dataframe1.get_away_wins(2000, "Arsenal"))
+    print(dataframe1.get_home_total_points(2000, "Arsenal"))
