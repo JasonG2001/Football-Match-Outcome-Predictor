@@ -209,6 +209,14 @@ class DataframeAnalysis:
 
         return away_points
 
+    def get_total_points(self, year: int, team: str) -> int:
+
+        home_points: int = self.get_home_total_points(year, team)
+        away_points: int = self.get_away_total_points(year, team)
+
+        total_points: int = home_points + away_points
+
+        return total_points
 
 
     def get_total_win_since_beginning(self, team: str) -> int:
@@ -279,4 +287,4 @@ if __name__ == "__main__":
     dataframe1 = DataframeAnalysis("premier_league")
     dataframe2 = DataframeAnalysis("championship")
     print(dataframe1.get_away_wins(2000, "Arsenal"))
-    print(dataframe1.get_away_total_points(2000, "Arsenal"))
+    print(dataframe1.get_total_points(2000, "Arsenal"))
