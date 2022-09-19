@@ -126,11 +126,12 @@ class DataframeAnalysis:
 
         home_wins: int = 0
 
-        for index, row in data.iterrows():
+        result = data.loc[:, "Result"]
 
-            result: str = row["Result"]
-            home_team_score = int(result[0])
-            away_team_score = int(result[self.INDEX_OF_AWAY_TEAM])
+        for i, score in enumerate(result):
+
+            home_team_score = score[0]
+            away_team_score = score[self.INDEX_OF_AWAY_TEAM]
 
             if home_team_score > away_team_score:
 
@@ -147,11 +148,12 @@ class DataframeAnalysis:
 
         away_wins: int = 0
 
-        for index, row in data.iterrows():
+        result = data.loc[:, "Result"]
 
-            result: str = row["Result"]
-            home_team_score = int(result[0])
-            away_team_score = int(result[self.INDEX_OF_AWAY_TEAM])
+        for i, score in enumerate(result):
+
+            home_team_score = score[0]
+            away_team_score = score[self.INDEX_OF_AWAY_TEAM]
 
             if home_team_score < away_team_score:
 
@@ -236,4 +238,4 @@ if __name__ == "__main__":
 
     dataframe1 = DataframeAnalysis("premier_league")
     dataframe2 = DataframeAnalysis("championship")
-    print(dataframe1.get_winner(2000, "Arsenal", "Leicester"))
+    print(dataframe1.get_away_wins(2000, "Arsenal"))
