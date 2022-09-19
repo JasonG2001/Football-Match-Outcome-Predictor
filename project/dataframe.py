@@ -176,11 +176,11 @@ class DataframeAnalysis:
 
         df = self.get_dataframe(year)
 
-        data = df[df["Home_Team"] == team]
+        new_df = df[df["Home_Team"] == team]
 
         home_points: int = 0
 
-        result = data.loc[:, "Result"]
+        result = new_df.loc[:, "Result"]
 
         for i, score in enumerate(result):
 
@@ -189,6 +189,25 @@ class DataframeAnalysis:
             home_points += goals
 
         return home_points
+
+
+    def get_away_total_points(self, year: int, team: str) -> int:
+
+        df = self.get_dataframe(year)
+
+        new_df = df[df["Away_Team"] == team]
+
+        away_points: int = 0
+
+        result = new_df.loc[:, "Result"]
+
+        for i, score in enumerate(result):
+
+            goals = int(score[self.INDEX_OF_AWAY_TEAM])
+
+            away_points += goals
+
+        return away_points
 
 
 
@@ -260,4 +279,4 @@ if __name__ == "__main__":
     dataframe1 = DataframeAnalysis("premier_league")
     dataframe2 = DataframeAnalysis("championship")
     print(dataframe1.get_away_wins(2000, "Arsenal"))
-    print(dataframe1.get_home_total_points(2000, "Arsenal"))
+    print(dataframe1.get_away_total_points(2000, "Arsenal"))
