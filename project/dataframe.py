@@ -282,9 +282,18 @@ class DataframeAnalysis:
         return dict(sorted(win_count_dictionary.items(), key=lambda x:x[1], reverse=True))
 
 
+    def get_win_streaks(self, year: int, team: str) -> list:
+
+        df = self.get_dataframe(year)
+
+        new_df = df[(df["Home_Team"] == team) | (df["Away_Team"] == team)]
+
+        return new_df
+
+
 if __name__ == "__main__":
 
     dataframe1 = DataframeAnalysis("premier_league")
     dataframe2 = DataframeAnalysis("championship")
-    print(dataframe1.get_away_wins(2000, "Arsenal"))
+    print(dataframe1.get_win_streaks(2000, "Arsenal"))
     print(dataframe1.get_total_points(2000, "Arsenal"))
