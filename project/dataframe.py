@@ -312,6 +312,14 @@ class DataframeAnalysis:
 
         return list_of_streaks
 
+    
+    def get_largest_win_streak(self, year: int, team: str) -> int:
+
+        list_of_streaks: list[int] = self.get_win_streaks(year, team)
+
+        return max(list_of_streaks)
+        
+
         
 
 
@@ -319,5 +327,5 @@ if __name__ == "__main__":
 
     dataframe1 = DataframeAnalysis("premier_league")
     dataframe2 = DataframeAnalysis("championship")
-    print(dataframe1.get_win_streaks(2000, "Arsenal"))
+    print(dataframe1.get_largest_win_streak(2000, "Arsenal"))
     print(dataframe1.get_total_points(2000, "Arsenal"))
