@@ -235,7 +235,7 @@ class DataframeAnalysis:
         return total_wins_over_all_years
 
 
-    def get_leaderboard_for_wins(self, year: int) -> dict:
+    def get_dictionary_of_wins(self, year: int) -> dict:
 
         list_of_teams: list[str] = self.get_list_of_teams(year)
 
@@ -247,28 +247,28 @@ class DataframeAnalysis:
 
             win_count_dictionary[team] = total_wins
 
-        return dict(sorted(win_count_dictionary.items(), key=lambda x:x[1], reverse=True))
+        return dict(sorted(win_count_dictionary.items()))
 
     
-    def get_all_leaderboards_for_wins(self) -> list:
+    def get_all_dictionary_of_wins(self) -> list:
 
         list_of_years: list[int] = self.result_finder.get_list_of_years()
 
         dictionary_of_year_to_leaderboard: dict = {} 
-        list_of_leaderboards: list[dict[str:int]] = []
+        list_of_dictionaries: list[dict[str:int]] = []
 
         for year in list_of_years:
 
-            leaderboard: dict[str:int] = self.get_leaderboard_for_wins(year)
+            dictionary_of_wins: dict[str:int] = self.get_dictionary_of_wins(year)
 
-            dictionary_of_year_to_leaderboard[year] = leaderboard
+            dictionary_of_year_to_leaderboard[year] = dictionary_of_wins
 
-            list_of_leaderboards.append(dictionary_of_year_to_leaderboard)
+            list_of_dictionaries.append(dictionary_of_year_to_leaderboard)
 
-        return list_of_leaderboards
+        return list_of_dictionaries
 
     
-    def get_all_time_leaderboard_for_wins(self) -> dict:
+    def get_all_time_dictionary_of_wins(self) -> dict:
 
         list_of_teams: list[str] = self.get_list_of_teams()
 
@@ -280,7 +280,7 @@ class DataframeAnalysis:
 
             win_count_dictionary[team] = total_wins
 
-        return dict(sorted(win_count_dictionary.items(), key=lambda x:x[1], reverse=True))
+        return dict(sorted(win_count_dictionary.items()))
 
 
     def get_win_streaks(self, year: int, team: str) -> list:
@@ -333,15 +333,14 @@ class DataframeAnalysis:
 
             teams_with_streak[team] = win_streak
 
-        return dict(sorted(teams_with_streak.items(), key=lambda x:x[1], reverse=True))
+        return dict(sorted(teams_with_streak.items()))
 
-
-        
 
 
 if __name__ == "__main__":
 
     dataframe1 = DataframeAnalysis("premier_league")
     dataframe2 = DataframeAnalysis("championship")
-    print(dataframe1.get_largest_win_streak_for_all_teams(2000))
-    print(dataframe1.get_total_points(2000, "Arsenal"))
+    print(dataframe1.get_dictionary_of_wins(2000))
+    print(dataframe1.get_all_time_dictionary_of_wins())
+    # print(dataframe1.get_total_points(2000, "Arsenal"))
