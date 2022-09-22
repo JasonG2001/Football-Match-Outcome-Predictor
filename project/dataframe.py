@@ -311,7 +311,7 @@ class DataframeAnalysis:
                 list_of_streaks.append(streak)
                 streak: int = 0
 
-        return max(list_of_streaks)
+        return max(list_of_streaks, default=0) # Needs fixing as a team that wins all games will never have streak appended
 
 
     def get_largest_win_streak_over_all_years(self, team: str) -> int:
@@ -327,6 +327,21 @@ class DataframeAnalysis:
             list_of_streaks.append(streak)
 
         return max(list_of_streaks)
+
+
+    def get_dictionary_of_all_time_streaks(self):
+
+        teams: list[str] = self.get_list_of_teams()
+
+        dictionary_of_streaks: dict[str:int] = {}
+
+        for team in teams:
+
+            largest_streak: int = self.get_largest_win_streak_over_all_years(team)
+
+            dictionary_of_streaks[team] = largest_streak
+
+        return dict(sorted(dictionary_of_streaks.items()))
 
 
     def get_largest_win_streak_for_all_teams(self, year: int) -> dict:
@@ -351,4 +366,5 @@ if __name__ == "__main__":
     dataframe2 = DataframeAnalysis("championship")
     print(dataframe1.get_largest_win_streak_over_all_years("Arsenal"))
     print(dataframe1.get_all_time_dictionary_of_wins())
+    print(dataframe1.get_dictionary_of_all_time_streaks())
     # print(dataframe1.get_total_points(2000, "Arsenal"))
