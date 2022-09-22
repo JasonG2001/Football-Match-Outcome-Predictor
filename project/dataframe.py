@@ -283,7 +283,7 @@ class DataframeAnalysis:
         return dict(sorted(win_count_dictionary.items()))
 
 
-    def get_win_streaks(self, year: int, team: str) -> list:
+    def get_largest_win_streak(self, year: int, team: str) -> list:
 
         df = self.get_dataframe(year)
 
@@ -311,12 +311,20 @@ class DataframeAnalysis:
                 list_of_streaks.append(streak)
                 streak: int = 0
 
-        return list_of_streaks
+        return max(list_of_streaks)
 
-    
-    def get_largest_win_streak(self, year: int, team: str) -> int:
 
-        list_of_streaks: list[int] = self.get_win_streaks(year, team)
+    def get_largest_win_streak_over_all_years(self, team: str) -> int:
+
+        years: list[int] = self.result_finder.get_list_of_years()
+
+        list_of_streaks: list[int] = []
+
+        for year in years:
+
+            streak: int = self.get_largest_win_streak(year, team)
+
+            list_of_streaks.append(streak)
 
         return max(list_of_streaks)
 
@@ -341,6 +349,6 @@ if __name__ == "__main__":
 
     dataframe1 = DataframeAnalysis("premier_league")
     dataframe2 = DataframeAnalysis("championship")
-    print(dataframe1.get_dictionary_of_wins(2000))
+    print(dataframe1.get_largest_win_streak_over_all_years("Arsenal"))
     print(dataframe1.get_all_time_dictionary_of_wins())
     # print(dataframe1.get_total_points(2000, "Arsenal"))
