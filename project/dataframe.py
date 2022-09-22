@@ -171,7 +171,7 @@ class DataframeAnalysis:
 
         return total_wins
 
-    
+
     def get_home_total_points(self, year: int, team: str) -> int:
 
         df = self.get_dataframe(year)
@@ -209,6 +209,7 @@ class DataframeAnalysis:
 
         return away_points
 
+
     def get_total_points(self, year: int, team: str) -> int:
 
         home_points: int = self.get_home_total_points(year, team)
@@ -234,7 +235,7 @@ class DataframeAnalysis:
         return total_wins_over_all_years
 
 
-    def get_leaderboard(self, year: int) -> dict:
+    def get_leaderboard_for_wins(self, year: int) -> dict:
 
         list_of_teams: list[str] = self.get_list_of_teams(year)
 
@@ -249,7 +250,7 @@ class DataframeAnalysis:
         return dict(sorted(win_count_dictionary.items(), key=lambda x:x[1], reverse=True))
 
     
-    def get_all_leaderboards(self) -> list:
+    def get_all_leaderboards_for_wins(self) -> list:
 
         list_of_years: list[int] = self.result_finder.get_list_of_years()
 
@@ -258,7 +259,7 @@ class DataframeAnalysis:
 
         for year in list_of_years:
 
-            leaderboard: dict[str:int] = self.get_leaderboard(year)
+            leaderboard: dict[str:int] = self.get_leaderboard_for_wins(year)
 
             dictionary_of_year_to_leaderboard[year] = leaderboard
 
@@ -267,7 +268,7 @@ class DataframeAnalysis:
         return list_of_leaderboards
 
     
-    def get_all_time_leaderboard(self) -> dict:
+    def get_all_time_leaderboard_for_wins(self) -> dict:
 
         list_of_teams: list[str] = self.get_list_of_teams()
 
@@ -332,7 +333,7 @@ class DataframeAnalysis:
 
             teams_with_streak[team] = win_streak
 
-        return teams_with_streak
+        return dict(sorted(teams_with_streak.items(), key=lambda x:x[1], reverse=True))
 
 
         
