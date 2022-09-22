@@ -288,7 +288,31 @@ class DataframeAnalysis:
 
         new_df = df[(df["Home_Team"] == team) | (df["Away_Team"] == team)]
 
-        return new_df
+        list_of_streaks: list[int] = []
+        streak: int = 0
+        
+        for i, record in new_df.iterrows():
+
+            result: str = record["Result"]
+            home_score = int(result[0])
+            away_score = int(result[self.INDEX_OF_AWAY_TEAM])
+
+            if (record["Home_Team"] == team) & (home_score > away_score):
+
+                streak += 1
+
+            elif (record["Away_Team"] == team) & (home_score < away_score):
+
+                streak += 1
+
+            else:
+
+                list_of_streaks.append(streak)
+                streak: int = 0
+
+        return list_of_streaks
+
+        
 
 
 if __name__ == "__main__":
