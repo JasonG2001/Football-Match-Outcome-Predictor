@@ -9,8 +9,14 @@ class FootballDataframe:
         self.dataframe = DataframeAnalysis(football_league)
 
 
-    def make_dataframe(self, *args):
+    def make_dataframe(self):
 
         wins: dict[str:int] = self.dataframe.get_win_board_over_all_years()
 
-        return pd.DataFrame.from_dict(wins)
+        return pd.DataFrame.from_dict(wins, orient="index")
+
+
+if __name__ == "__main__":
+
+    football_dataframe = FootballDataframe("premier_league")
+    print(football_dataframe.make_dataframe())

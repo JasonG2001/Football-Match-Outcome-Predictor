@@ -78,6 +78,17 @@ class DataframeAnalysis:
 
             print("No results for the specified year")
 
+
+    def get_teams_indexed(self):
+
+        teams: list[str] = self.get_teams()
+
+        teams_indexed: dict[int:str] = {}
+        
+        for team in teams:
+
+            teams_indexed[teams.index(team)] = team  
+
     
     def get_number_of_teams(self, year: int = None):
 
