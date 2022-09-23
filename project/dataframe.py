@@ -81,13 +81,17 @@ class DataframeAnalysis:
 
     def get_teams_indexed(self):
 
-        teams: list[str] = self.get_teams()
+        teams: set[str] = self.get_teams()
+
+        sorted_teams: list = sorted(list(teams))
 
         teams_indexed: dict[int:str] = {}
         
-        for team in teams:
+        for team in sorted_teams:
 
-            teams_indexed[teams.index(team)] = team  
+            teams_indexed[sorted_teams.index(team)] = team  
+
+        return teams_indexed
 
     
     def get_number_of_teams(self, year: int = None):
@@ -377,5 +381,5 @@ if __name__ == "__main__":
     dataframe2 = DataframeAnalysis("championship")
     print(dataframe1.get_largest_streak_over_all_years("Arsenal"))
     print(dataframe1.get_win_board_over_all_years())
-    print(dataframe1.get_largest_streak_board_over_all_years())
+    print(dataframe1.get_teams_indexed())
     # print(dataframe1.get_total_points(2000, "Arsenal"))
