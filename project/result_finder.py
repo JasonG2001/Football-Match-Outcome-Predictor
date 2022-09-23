@@ -22,24 +22,24 @@ class ResultFinder:
 
         self.go_to_football_league()
 
-        list_of_results: list[str] = os.listdir(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{self.football_league}")
+        results: list[str] = os.listdir(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{self.football_league}")
 
-        for annual_result in list_of_results:
+        for result in results:
 
-            if str(year) == annual_result[self.INDEX_OF_THOUSANDS:self.INDEX_OF_ONES]:
+            if str(year) == result[self.INDEX_OF_THOUSANDS:self.INDEX_OF_ONES]:
                 
-                return annual_result
+                return result
 
             
     def get_list_of_years(self) -> list:
         
         self.go_to_football_league()
 
-        list_of_results: list[str] = os.listdir(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{self.football_league}")
+        results: list[str] = os.listdir(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{self.football_league}")
 
         years: list[int] = []
 
-        for result in list_of_results:
+        for result in results:
 
             year = int(result[self.INDEX_OF_THOUSANDS:self.INDEX_OF_ONES])
 
