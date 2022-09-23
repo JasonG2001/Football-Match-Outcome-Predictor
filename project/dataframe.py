@@ -34,7 +34,7 @@ class DataframeAnalysis:
         return elo
 
 
-    def get_list_of_teams(self, year: int = None) -> list:
+    def get_teams(self, year: int = None) -> list:
 
         try:
 
@@ -81,11 +81,11 @@ class DataframeAnalysis:
     
     def get_number_of_teams(self, year: int = None):
 
-        list_of_teams: list[str] = self.get_list_of_teams(year)
+        teams: list[str] = self.get_teams(year)
 
         try:
             
-            return len(list_of_teams)
+            return len(teams)
 
         except:
 
@@ -96,20 +96,20 @@ class DataframeAnalysis:
 
         df = self.get_dataframe(year) # returns df
 
-        data = df[(df["Home_Team"] == home_team) & (df["Away_Team"] == away_team)]
+        new_df = df[(df["Home_Team"] == home_team) & (df["Away_Team"] == away_team)]
 
-        result = data.loc[:, "Result"]
+        result = new_df.loc[:, "Result"]
 
         for i, score in enumerate(result):
             
-            home_team_score = int(score[0])
-            away_team_score = int(score[self.INDEX_OF_AWAY_TEAM])
+            home_score = int(score[0])
+            away_score = int(score[self.INDEX_OF_AWAY_TEAM])
 
-            if home_team_score > away_team_score:
+            if home_score > away_score:
 
                 return home_team
 
-            elif home_team_score < away_team_score:
+            elif home_score < away_score:
 
                 return away_team
 
@@ -122,18 +122,18 @@ class DataframeAnalysis:
 
         df = self.get_dataframe(year)
 
-        data = df[df["Home_Team"] == team]
+        new_df = df[df["Home_Team"] == team]
 
         home_wins: int = 0
 
-        result = data.loc[:, "Result"]
+        result = new_df.loc[:, "Result"]
 
         for i, score in enumerate(result):
 
-            home_team_score = int(score[0])
-            away_team_score = int(score[self.INDEX_OF_AWAY_TEAM])
+            home_score = int(score[0])
+            away_score = int(score[self.INDEX_OF_AWAY_TEAM])
 
-            if home_team_score > away_team_score:
+            if home_score > away_score:
 
                 home_wins += 1
 
@@ -144,18 +144,18 @@ class DataframeAnalysis:
 
         df = self.get_dataframe(year)
 
-        data = df[df["Away_Team"] == team]
+        new_df = df[df["Away_Team"] == team]
 
         away_wins: int = 0
 
-        result = data.loc[:, "Result"]
+        result = new_df.loc[:, "Result"]
 
         for i, score in enumerate(result):
 
-            home_team_score = int(score[0])
-            away_team_score = int(score[self.INDEX_OF_AWAY_TEAM])
+            home_score = int(score[0])
+            away_score = int(score[self.INDEX_OF_AWAY_TEAM])
 
-            if home_team_score < away_team_score:
+            if home_score < away_score:
 
                 away_wins += 1
 
@@ -172,13 +172,13 @@ class DataframeAnalysis:
         return total_wins
 
 
-    def get_home_total_points(self, year: int, team: str) -> int:
+    def get_home_goals(self, year: int, team: str) -> int:
 
         df = self.get_dataframe(year)
 
         new_df = df[df["Home_Team"] == team]
 
-        home_points: int = 0
+        home_goals: int = 0
 
         result = new_df.loc[:, "Result"]
 
@@ -186,18 +186,18 @@ class DataframeAnalysis:
 
             goals = int(score[0])
 
-            home_points += goals
+            home_goals += goals
 
-        return home_points
+        return home_goals
 
 
-    def get_away_total_points(self, year: int, team: str) -> int:
+    def get_away_goals(self, year: int, team: str) -> int:
 
         df = self.get_dataframe(year)
 
         new_df = df[df["Away_Team"] == team]
 
-        away_points: int = 0
+        away_goals: int = 0
 
         result = new_df.loc[:, "Result"]
 
@@ -205,28 +205,28 @@ class DataframeAnalysis:
 
             goals = int(score[self.INDEX_OF_AWAY_TEAM])
 
-            away_points += goals
+            away_goals += goals
 
-        return away_points
-
-
-    def get_total_points(self, year: int, team: str) -> int:
-
-        home_points: int = self.get_home_total_points(year, team)
-        away_points: int = self.get_away_total_points(year, team)
-
-        total_points: int = home_points + away_points
-
-        return total_points
+        return away_goals
 
 
-    def get_total_win_since_beginning(self, team: str) -> int:
+    def get_total_goals(self, year: int, team: str) -> int:
 
-        list_of_years: list[int] = self.result_finder.get_list_of_years()
+        home_points: int = self.get_home_goals(year, team)
+        away_points: int = self.get_away_goals(year, team)
+
+        total_goals: int = home_points + away_points
+
+        return total_goals
+
+
+    def get_total_wins_over_all_years(self, team: str) -> int:
+
+        years: list[int] = self.result_finder.get_list_of_years()
 
         total_wins_over_all_years: int = 0
 
-        for year in list_of_years:
+        for year in years:
 
             total_wins: int = self.get_total_wins(year, team)
 
@@ -235,61 +235,61 @@ class DataframeAnalysis:
         return total_wins_over_all_years
 
 
-    def get_dictionary_of_wins(self, year: int) -> dict:
+    def get_win_board(self, year: int) -> dict:
 
-        list_of_teams: list[str] = self.get_list_of_teams(year)
+        teams: list[str] = self.get_teams(year)
 
-        win_count_dictionary: dict[str:str] = {}
+        win_board: dict[str:str] = {}
     
-        for team in list_of_teams:
+        for team in teams:
 
             total_wins: int = self.get_total_wins(year, team)
 
-            win_count_dictionary[team] = total_wins
+            win_board[team] = total_wins
 
-        return dict(sorted(win_count_dictionary.items()))
-
-    
-    def get_all_dictionary_of_wins(self) -> list:
-
-        list_of_years: list[int] = self.result_finder.get_list_of_years()
-
-        dictionary_of_year_to_leaderboard: dict = {} 
-        list_of_dictionaries: list[dict[str:int]] = []
-
-        for year in list_of_years:
-
-            dictionary_of_wins: dict[str:int] = self.get_dictionary_of_wins(year)
-
-            dictionary_of_year_to_leaderboard[year] = dictionary_of_wins
-
-            list_of_dictionaries.append(dictionary_of_year_to_leaderboard)
-
-        return list_of_dictionaries
+        return dict(sorted(win_board.items()))
 
     
-    def get_all_time_dictionary_of_wins(self) -> dict:
+    def get_all_win_boards(self) -> list:
 
-        list_of_teams: list[str] = self.get_list_of_teams()
+        years: list[int] = self.result_finder.get_list_of_years()
 
-        win_count_dictionary: dict[str:str] = {}
+        win_board_for_each_year: dict = {} 
+        all_win_boards: list[dict[str:int]] = []
 
-        for team in list_of_teams:
+        for year in years:
 
-            total_wins: int = self.get_total_win_since_beginning(team)
+            win_board: dict[str:int] = self.get_win_board(year)
 
-            win_count_dictionary[team] = total_wins
+            win_board_for_each_year[year] = win_board
 
-        return dict(sorted(win_count_dictionary.items()))
+            all_win_boards.append(win_board_for_each_year)
+
+        return all_win_boards
+
+    
+    def get_win_board_over_all_years(self) -> dict:
+
+        teams: list[str] = self.get_teams()
+
+        win_board_over_all_years: dict[str:str] = {}
+
+        for team in teams:
+
+            total_wins_over_all_years: int = self.get_total_wins_over_all_years(team)
+
+            win_board_over_all_years[team] = total_wins_over_all_years
+
+        return dict(sorted(win_board_over_all_years.items()))
 
 
-    def get_largest_win_streak(self, year: int, team: str) -> list:
+    def get_largest_streak(self, year: int, team: str) -> list:
 
         df = self.get_dataframe(year)
 
         new_df = df[(df["Home_Team"] == team) | (df["Away_Team"] == team)]
 
-        list_of_streaks: list[int] = []
+        streaks: list[int] = []
         streak: int = 0
         
         for i, record in new_df.iterrows():
@@ -308,55 +308,55 @@ class DataframeAnalysis:
 
             else:
 
-                list_of_streaks.append(streak)
+                streaks.append(streak)
                 streak: int = 0
 
-        return max(list_of_streaks, default=0) # Needs fixing as a team that wins all games will never have streak appended
+        return max(streaks, default=0) # Needs fixing as a team that wins all games will never have streak appended
 
 
-    def get_largest_win_streak_over_all_years(self, team: str) -> int:
+    def get_largest_streak_over_all_years(self, team: str) -> int:
 
         years: list[int] = self.result_finder.get_list_of_years()
 
-        list_of_streaks: list[int] = []
+        streaks: list[int] = []
 
         for year in years:
 
-            streak: int = self.get_largest_win_streak(year, team)
+            streak: int = self.get_largest_streak(year, team)
 
-            list_of_streaks.append(streak)
+            streaks.append(streak)
 
-        return max(list_of_streaks)
+        return max(streaks)
 
 
-    def get_dictionary_of_all_time_streaks(self):
+    def get_largest_streak_board_over_all_years(self):
 
-        teams: list[str] = self.get_list_of_teams()
+        teams: list[str] = self.get_teams()
 
-        dictionary_of_streaks: dict[str:int] = {}
+        streak_board_over_all_years: dict[str:int] = {}
 
         for team in teams:
 
-            largest_streak: int = self.get_largest_win_streak_over_all_years(team)
+            largest_streak: int = self.get_largest_streak_over_all_years(team)
 
-            dictionary_of_streaks[team] = largest_streak
+            streak_board_over_all_years[team] = largest_streak
 
-        return dict(sorted(dictionary_of_streaks.items()))
+        return dict(sorted(streak_board_over_all_years.items()))
 
 
-    def get_largest_win_streak_for_all_teams(self, year: int) -> dict:
+    def get_largest_streak_board_for_all_teams(self, year: int) -> dict:
         
-        list_of_teams: list[str] = self.get_list_of_teams(year)
+        teams: list[str] = self.get_teams(year)
 
-        teams_with_streak: dict = {}
+        streak_board: dict = {}
 
-        for team in list_of_teams:
+        for team in teams:
 
-            win_streak = self.get_largest_win_streak(year, team)
+            win_streak = self.get_largest_streak(year, team)
 
-            teams_with_streak[team] = win_streak
+            streak_board[team] = win_streak
 
-        return dict(sorted(teams_with_streak.items()))
+        return dict(sorted(streak_board.items()))
 
 
 
@@ -364,7 +364,7 @@ if __name__ == "__main__":
 
     dataframe1 = DataframeAnalysis("premier_league")
     dataframe2 = DataframeAnalysis("championship")
-    print(dataframe1.get_largest_win_streak_over_all_years("Arsenal"))
-    print(dataframe1.get_all_time_dictionary_of_wins())
-    print(dataframe1.get_dictionary_of_all_time_streaks())
+    print(dataframe1.get_largest_streak_over_all_years("Arsenal"))
+    print(dataframe1.get_win_board_over_all_years())
+    print(dataframe1.get_largest_streak_board_over_all_years())
     # print(dataframe1.get_total_points(2000, "Arsenal"))
