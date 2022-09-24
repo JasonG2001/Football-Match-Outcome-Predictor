@@ -23,6 +23,10 @@ class FootballDataframe:
         streaks = list(streak_board.values())
         df["streaks"] = streaks
 
+        goal_board: dict[str:int] = self.dataframe.get_goal_board_over_all_years()
+        goals = list(goal_board.values())
+        df["goals"] = goals
+
         return df
 
 
