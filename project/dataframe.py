@@ -254,7 +254,17 @@ class DataframeAnalysis:
 
     def get_goal_board_over_all_years(self) -> dict:
 
-        
+        goal_board_over_all_years: dict[str:int] = {}
+
+        teams: list[str] = self.get_teams()
+
+        for team in teams:
+
+            total_goals_over_all_years: int = self.get_total_goals_over_all_years(team)
+
+            goal_board_over_all_years[team] = total_goals_over_all_years
+
+        return dict(sorted(goal_board_over_all_years.items()))
 
 
     def get_total_wins_over_all_years(self, team: str) -> int:
@@ -403,5 +413,5 @@ if __name__ == "__main__":
     dataframe2 = DataframeAnalysis("championship")
     #print(dataframe1.get_largest_streak_over_all_years("Arsenal"))
     #print(dataframe1.get_teams())
-    print(dataframe1.get_win_board_over_all_years())
+    print(dataframe1.get_goal_board_over_all_years())
     # print(dataframe1.get_total_points(2000, "Arsenal"))
