@@ -237,6 +237,26 @@ class DataframeAnalysis:
         return total_goals
 
 
+    def get_total_goals_over_all_years(self, team: str) -> int:
+
+        years: list[int] = self.result_finder.get_list_of_years()
+
+        total_goals_over_all_years: int = 0
+
+        for year in years:
+
+            total_goals = self.get_total_goals(year, team)
+
+            total_goals_over_all_years += total_goals
+
+        return total_goals_over_all_years
+
+
+    def get_goal_board_over_all_years(self) -> dict:
+
+        
+
+
     def get_total_wins_over_all_years(self, team: str) -> int:
 
         years: list[int] = self.result_finder.get_list_of_years()
