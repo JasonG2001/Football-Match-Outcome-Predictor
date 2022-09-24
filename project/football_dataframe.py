@@ -9,17 +9,19 @@ class FootballDataframe:
         self.dataframe = DataframeAnalysis(football_league)
 
 
-    def make_dataframe(self, *args):
+    def make_dataframe(self):
 
         indexed_teams: dict[int:str] = self.dataframe.get_teams_indexed()
 
         df = pd.DataFrame.from_dict(indexed_teams, orient="index")
 
         win_board: dict[str:int] = self.dataframe.get_win_board_over_all_years()
-
         wins = list(win_board.values())
+        df["wins"] = wins
 
-        df["Wins"] = wins
+        streak_board: dict[str:int] = self.dataframe.get_largest_streak_board_over_all_years()
+        streaks = list(streak_board.values())
+        df["streaks"] = streaks
 
         return df
 
