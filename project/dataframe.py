@@ -34,7 +34,7 @@ class DataframeAnalysis:
         return elo
 
 
-    def get_teams(self, year: int = None) -> list:
+    def get_teams(self, year: int = None) -> set:
 
         try:
 
@@ -79,14 +79,15 @@ class DataframeAnalysis:
             print("No results for the specified year")
 
 
-    def get_teams_indexed(self):
+    def get_teams_indexed(self) -> dict:
 
         teams: set[str] = self.get_teams()
 
-        sorted_teams: list = sorted(list(teams))
+        sorted_teams: list[str] = sorted(list(teams))
 
         teams_indexed: dict[int:str] = {}
         
+        team: str
         for team in sorted_teams:
 
             teams_indexed[sorted_teams.index(team)] = team  
@@ -94,7 +95,7 @@ class DataframeAnalysis:
         return teams_indexed
 
     
-    def get_number_of_teams(self, year: int = None):
+    def get_number_of_teams(self, year: int = None) -> str:
 
         teams: list[str] = self.get_teams(year)
 
@@ -196,8 +197,9 @@ class DataframeAnalysis:
         home_goals: int = 0
 
         result = new_df.loc[:, "Result"]
-
-        for i, score in enumerate(result):
+        
+        score: str       
+        for _, score in enumerate(result):
 
             goals = int(score[0])
 
@@ -307,7 +309,7 @@ class DataframeAnalysis:
         streaks: list[int] = []
         streak: int = 0
         
-        for i, record in new_df.iterrows():
+        for _, record in new_df.iterrows():
 
             result: str = record["Result"]
             home_score = int(result[0])
@@ -380,6 +382,6 @@ if __name__ == "__main__":
     dataframe1 = DataframeAnalysis("premier_league")
     dataframe2 = DataframeAnalysis("championship")
     print(dataframe1.get_largest_streak_over_all_years("Arsenal"))
-    print(dataframe1.get_win_board_over_all_years())
+    print(dataframe1.get_teams())
     print(dataframe1.get_teams_indexed())
     # print(dataframe1.get_total_points(2000, "Arsenal"))

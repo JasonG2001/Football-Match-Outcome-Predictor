@@ -5,15 +5,15 @@ class FootballDataframe:
 
     def __init__(self, football_league: str):
 
-        self.football_league = football_league
+        self.football_league: str = football_league
         self.dataframe = DataframeAnalysis(football_league)
 
 
     def make_dataframe(self):
 
-        wins: dict[str:int] = self.dataframe.get_win_board_over_all_years()
+        indexed_teams: dict[int:str] = self.dataframe.get_teams_indexed()
 
-        return pd.DataFrame.from_dict(wins, orient="index")
+        return pd.DataFrame.from_dict(indexed_teams, orient="index")
 
 
 if __name__ == "__main__":
