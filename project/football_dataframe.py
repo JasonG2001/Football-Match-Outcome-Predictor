@@ -5,7 +5,6 @@ class FootballDataframe:
 
     def __init__(self, football_league: str):
 
-        self.football_league: str = football_league
         self.dataframe = DataframeAnalysis(football_league)
 
 
