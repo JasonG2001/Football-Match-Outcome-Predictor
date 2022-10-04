@@ -31,9 +31,20 @@ class Database:
         self.execute_to_postgres(host, user, password, dbname, port, sql_code)
 
     
-    def give_sql_input(self):
+    def give_records(self, host: str, user: str, password: str, dbname: str, port: int):
 
-        pass
+        df = self.dataframe.make_dataframe()
+
+        all_records: list[tuple[str,int]] = []
+
+        for _, row in df.iterrows():
+
+            record = tuple(row)
+
+            all_records.append(record)
+
+        return all_records
+
 
 
 if __name__ == "__main__":
@@ -45,7 +56,8 @@ if __name__ == "__main__":
     PORT: int = 5432
 
     database = Database("premier_league")
-    database.create_table(HOST, USER, PASSWORD, DBNAME, PORT)
+    #database.create_table(HOST, USER, PASSWORD, DBNAME, PORT)
+    print(database.give_records(HOST, USER, PASSWORD, DBNAME, PORT))
 
     
 
