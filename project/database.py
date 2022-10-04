@@ -31,7 +31,7 @@ class Database:
         self.execute_to_postgres(host, user, password, dbname, port, sql_code)
 
     
-    def give_records(self, host: str, user: str, password: str, dbname: str, port: int):
+    def get_all_records(self) -> list:
 
         df = self.dataframe.make_dataframe()
 
@@ -46,6 +46,27 @@ class Database:
         return all_records
 
 
+    def upload_to_table(self, host: str, user: str, password: str, dbname: str, port: int):
+
+        all_records: list[tuple[str,int]] = self.get_all_records()
+
+        for record in all_records:
+
+            sql_code: str = f"""
+            INSERT INTO football_data (teams, wins, streaks, goals)
+            VALUES {record}
+            """
+
+            self.execute_to_postgres(host, user, password, dbname, port, sql_code)
+
+
+    def show_table(self, host: str, user: str, password: str, dbname: str, port: int):
+
+        sql_code: str = """SELECT * FROM football_data"""
+
+        self.execute_to_postgres(host, user, password, dbname, port, sql_code)
+
+
 
 if __name__ == "__main__":
 
@@ -56,9 +77,8 @@ if __name__ == "__main__":
     PORT: int = 5432
 
     database = Database("premier_league")
-    #database.create_table(HOST, USER, PASSWORD, DBNAME, PORT)
-    print(database.give_records(HOST, USER, PASSWORD, DBNAME, PORT))
-
+    database.create_table(HOST, USER, PASSWORD, DBNAME, PORT)
+    database.upload_to_table(HOST, USER, PASSWORD, DBNAME, PORT)
     
 
     
