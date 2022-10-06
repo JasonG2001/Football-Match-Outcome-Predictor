@@ -33,3 +33,25 @@ This data was then stored into a pandas dataframe which I made into a separate c
 Later, a method and class was made to store the dataframe as a csv file named "cleaned_dataset.csv". In the future, I can alter this method by making it take a path as an argument and this will make my method more general and allow the csv file to be stored into any path.
 
 <img width="620" alt="image" src="https://user-images.githubusercontent.com/109103538/192159529-f1f81291-3bdb-4fd6-ac0e-cfda0542072a.png">
+
+# Milestone 4
+
+This milestone required me to spin up an RDS instance on aws. I made a postgres database as this is how I planned on upserting my data.
+
+<img width="701" alt="image" src="https://user-images.githubusercontent.com/109103538/194354721-27f5dc22-11a8-4dc1-b4c7-725beb83ebe1.png">
+
+Using psycopg2, I converted the pandas dataframe into a list form so that I could iterate over the list to upload each record to the postgres database. I first started by writing a method which would take sql code as an argument and this method would run the sql code in postgres.
+
+<img width="659" alt="image" src="https://user-images.githubusercontent.com/109103538/194355768-dbab3627-0cfb-4f9b-923f-0cea3349a592.png">
+
+I then wrote the method which would call the 'execute_to_postgres' method to make a table with the columns I list in the sql code.
+
+<img width="501" alt="image" src="https://user-images.githubusercontent.com/109103538/194356229-baf87cb1-55a0-48e3-b9f9-f90ea733c984.png">
+
+The 'get_all_records' method converts the pandas dataframe into a list of tuples where each tuple consista of the team, wins, streaks and goals.
+I then iterated over the list and uploaded each tuple as a record to postgres.
+
+<img width="512" alt="image" src="https://user-images.githubusercontent.com/109103538/194357285-00de1586-d007-452a-bac9-b2c97c4089da.png">
+
+Final database on postgres:
+<img width="311" alt="image" src="https://user-images.githubusercontent.com/109103538/194357958-5424cfc2-97a0-4b63-b6a6-99057a6e7b90.png">
