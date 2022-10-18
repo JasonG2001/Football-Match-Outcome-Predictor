@@ -21,7 +21,14 @@ class FootballDataframe:
     
     def get_list_of_wins(self) -> list:
 
-        
+        win_board: dict[str:int] = self.dataframe.get_win_board_over_all_years()
+
+        return list(win_board.values())
+
+
+    def get_list_of_streaks(self) -> list:
+
+        streak_board: dict[str:int]
 
 
 
@@ -50,4 +57,4 @@ if __name__ == "__main__":
 
     football_dataframe = FootballDataframe("premier_league")
     # print(football_dataframe.make_dataframe())
-    print(football_dataframe.get_list_of_teams())
+    print(football_dataframe.get_list_of_wins())
