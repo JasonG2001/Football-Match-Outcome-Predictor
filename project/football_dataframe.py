@@ -42,21 +42,15 @@ class FootballDataframe:
 
     def make_dataframe(self):
 
-        indexed_teams: dict[int:str] = self.dataframe.get_teams_indexed()
+        data: dict[str:list] = {
 
-        df = pd.DataFrame.from_dict(indexed_teams, orient="index")
+            "Teams": self.get_list_of_teams(),
+            "Wins": self.get_list_of_wins(),
+            "Streaks": self.get_list_of_streaks(),
+            "Goals": self.get_list_of_goals()
+        }
 
-        win_board: dict[str:int] = self.dataframe.get_win_board_over_all_years()
-        wins = list(win_board.values())
-        df["wins"] = wins
-
-        streak_board: dict[str:int] = self.dataframe.get_largest_streak_board_over_all_years()
-        streaks = list(streak_board.values())
-        df["streaks"] = streaks
-
-        goal_board: dict[str:int] = self.dataframe.get_goal_board_over_all_years()
-        goals = list(goal_board.values())
-        df["goals"] = goals
+        df = pd.DataFrame(data = data)
 
         return df
 
@@ -65,4 +59,4 @@ if __name__ == "__main__":
 
     football_dataframe = FootballDataframe("premier_league")
     # print(football_dataframe.make_dataframe())
-    print(football_dataframe.get_list_of_goals())
+    print(football_dataframe.make_dataframe())
