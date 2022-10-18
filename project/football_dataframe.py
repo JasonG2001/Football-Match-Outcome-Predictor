@@ -28,8 +28,9 @@ class FootballDataframe:
 
     def get_list_of_streaks(self) -> list:
 
-        streak_board: dict[str:int]
+        streak_board: dict[str:int] = self.dataframe.get_largest_streak_board_over_all_years()
 
+        return list(streak_board.values())
 
 
     def make_dataframe(self):
@@ -57,4 +58,4 @@ if __name__ == "__main__":
 
     football_dataframe = FootballDataframe("premier_league")
     # print(football_dataframe.make_dataframe())
-    print(football_dataframe.get_list_of_wins())
+    print(football_dataframe.get_list_of_streaks())

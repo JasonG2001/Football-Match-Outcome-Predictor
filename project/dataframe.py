@@ -410,9 +410,9 @@ if __name__ == "__main__":
 
     dataframe1 = DataframeAnalysis("premier_league")
     dataframe2 = DataframeAnalysis("championship")
-    #print(dataframe1.get_largest_streak_over_all_years("Arsenal"))
+    # print(dataframe1.get_largest_streak_over_all_years("Arsenal"))
     #print(dataframe1.get_teams())
     # print(dataframe1.get_goal_board_over_all_years())
     # print(dataframe1.get_total_points(2000, "Arsenal"))
     # print(dataframe1.get_elo())
-    print(dataframe1.get_win_board_over_all_years())
+    print(dataframe1.get_largest_streak_board_over_all_years())
