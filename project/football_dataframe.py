@@ -58,5 +58,4 @@ class FootballDataframe:
 if __name__ == "__main__":
 
     football_dataframe = FootballDataframe("premier_league")
-    # print(football_dataframe.make_dataframe())
     print(football_dataframe.make_dataframe())
