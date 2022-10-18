@@ -33,6 +33,13 @@ class FootballDataframe:
         return list(streak_board.values())
 
 
+    def get_list_of_goals(self) -> list:
+
+        goal_board: dict[str:int] = self.dataframe.get_goal_board_over_all_years()
+
+        return list(goal_board.values())
+
+
     def make_dataframe(self):
 
         indexed_teams: dict[int:str] = self.dataframe.get_teams_indexed()
@@ -58,4 +65,4 @@ if __name__ == "__main__":
 
     football_dataframe = FootballDataframe("premier_league")
     # print(football_dataframe.make_dataframe())
-    print(football_dataframe.get_list_of_streaks())
+    print(football_dataframe.get_list_of_goals())
