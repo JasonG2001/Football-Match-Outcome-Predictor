@@ -8,6 +8,23 @@ class FootballDataframe:
         self.dataframe = DataframeAnalysis(football_league)
 
 
+    def get_list_of_teams(self) -> list:
+
+        set_of_teams: set[str] = self.dataframe.get_teams()
+
+        list_of_teams: list[str] = list(set_of_teams)
+
+        ordered_list_of_teams: list[str] = sorted(list_of_teams)
+
+        return ordered_list_of_teams
+
+    
+    def get_list_of_wins(self) -> list:
+
+        
+
+
+
     def make_dataframe(self):
 
         indexed_teams: dict[int:str] = self.dataframe.get_teams_indexed()
@@ -32,4 +49,5 @@ class FootballDataframe:
 if __name__ == "__main__":
 
     football_dataframe = FootballDataframe("premier_league")
-    print(football_dataframe.make_dataframe())
+    # print(football_dataframe.make_dataframe())
+    print(football_dataframe.get_list_of_teams())
