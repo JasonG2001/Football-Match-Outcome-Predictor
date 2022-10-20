@@ -3,6 +3,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
 
 class Model:
 
@@ -43,11 +44,20 @@ class Model:
         pipe.fit(X_train, y_train)
         return pipe.predict(X_test)
 
+    
+    def plot_correlation(self):
+
+        y_pred = self.fit_and_predict()
+        X_train, X_test, y_train, y_test = self.get_training_and_testing_set()
+
+        return plt.scatter(y_pred, y_test)
+
 
 if __name__ == "__main__":
 
     model = Model("premier_league")
     # print(model.get_training_and_testing_set())
     # print(model.get_training_and_testing_set())
-    print(model.fit_and_predict())
+    # print(model.fit_and_predict())
+    model.plot_correlation()
 
