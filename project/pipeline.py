@@ -35,17 +35,19 @@ class Model:
         return X_train, X_test, y_train, y_test
 
 
-    def fit_model(self):
+    def fit_and_predict(self):
 
         pipe = self.make_pipeline()
-        X_train, X_test, y_train, y_test = self.get_training_and_testing_set()
+        X_train, X_test, y_train, _ = self.get_training_and_testing_set()
 
         pipe.fit(X_train, y_train)
+        return pipe.predict(X_test)
 
 
 if __name__ == "__main__":
 
     model = Model("premier_league")
     # print(model.get_training_and_testing_set())
-    print(model.get_training_and_testing_set())
+    # print(model.get_training_and_testing_set())
+    print(model.fit_and_predict())
 
