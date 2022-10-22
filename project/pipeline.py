@@ -28,7 +28,7 @@ class Model:
 
         df = self.football_dataframe.make_dataframe()
 
-        X = df[["Wins", "Streaks", "Goals"]]
+        X = df[["Wins", "Streaks"]]
         y = df["Goals"]
 
         X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
@@ -48,9 +48,11 @@ class Model:
     def plot_correlation(self):
 
         y_pred = self.fit_and_predict()
-        X_train, X_test, y_train, y_test = self.get_training_and_testing_set()
+        _, _, _, y_test = self.get_training_and_testing_set()
 
-        return plt.scatter(y_pred, y_test)
+        plt.scatter(y_pred, y_test)
+
+        return plt.show()
 
 
 if __name__ == "__main__":
