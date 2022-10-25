@@ -57,5 +57,5 @@ class FootballDataframe:
 
 if __name__ == "__main__":
 
-    football_dataframe = FootballDataframe("premier_league")
+    football_dataframe = FootballDataframe("ligue_2")
     print(football_dataframe.make_dataframe())

@@ -42,7 +42,9 @@ class Model:
         X_train, X_test, y_train, _ = self.get_training_and_testing_set()
 
         pipe.fit(X_train, y_train)
-        return pipe.predict(X_test)
+        y_pred = pipe.predict(X_test)
+
+        return y_pred
 
     
     def plot_correlation(self):
@@ -58,8 +60,8 @@ class Model:
 if __name__ == "__main__":
 
     model = Model("premier_league")
-    # print(model.get_training_and_testing_set())
-    # print(model.get_training_and_testing_set())
+    model2 = Model("ligue_2")
     # print(model.fit_and_predict())
-    model.plot_correlation()
+    # model.plot_correlation()
+    model2.plot_correlation()
 
