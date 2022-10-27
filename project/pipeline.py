@@ -4,6 +4,7 @@ from sklearn.metrics import r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
+from sklearn.tree import DecisionTreeRegressor
 import matplotlib.pyplot as plt
 
 
@@ -32,6 +33,32 @@ class Model:
 
         return model # r2 = 0.9850585149465104
 
+
+    def linear_regression_pipeline(self):
+
+        X_train, X_test, y_train, y_test = self.train_test_split()
+
+        pipe = make_pipeline(
+
+            StandardScaler(), # Scaling the data
+            LinearRegression() # Type of prediction
+
+        )
+
+        pipe.fit(X_train, y_train)
+
+        return pipe # 0.9850585149465104
+
+
+    def decision_tree_regressor(self):
+
+        X_train, X_test, y_train, y_test = self.train_test_split()
+
+        model = DecisionTreeRegressor(random_state=0)
+        model.fit(X_train, y_train)
+
+        return model # 0.9820554696946081
+
     
     def plot_model(self, model):
 
@@ -53,25 +80,12 @@ class Model:
         return r2_score(y_pred, y_test)
 
 
-    
-    def make_pipeline(self):
-
-        pipe = make_pipeline(
-
-            StandardScaler(), # Scaling the data
-            LinearRegression() # Type of prediction
-
-        )
-
-        return pipe
-
-
 if __name__ == "__main__":
 
     model = Model("premier_league")
     model2 = Model("ligue_2")
 
-    mod = model.simple_linear_regression()
-    # model.plot_model(mod)
+    mod = model.decision_tree_regressor()
     print(model.score_model(mod))
+    model.plot_model(mod)
 
