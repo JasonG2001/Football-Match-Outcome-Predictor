@@ -7,6 +7,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVR
 from sklearn.tree import DecisionTreeRegressor
 import matplotlib.pyplot as plt
 
@@ -27,7 +28,7 @@ class Model:
         X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 
         return X_train, X_test, y_train, y_test
-        
+
 
     def simple_linear_regression(self):
 
@@ -70,10 +71,22 @@ class Model:
         X_train, X_test, y_train, y_test = self.train_test_split()
 
         model = GradientBoostingRegressor(random_state=0)
-
         trained_model = model.fit(X_train, y_train)
 
         return trained_model # 0.986401522797169
+
+
+    def SVR(self):
+
+        X_train, X_test, y_train, y_test = self.train_test_split()
+
+        model = SVR()
+        trained_model = model.fit(X_train, y_train)
+
+        return trained_model # -9447.089006984184
+
+
+    def
 
     
     def plot_model(self, model):
@@ -103,7 +116,7 @@ if __name__ == "__main__":
     model = Model("premier_league")
     model2 = Model("ligue_2")
 
-    mod = model.linear_regression_pipeline()
+    mod = model.SVR()
     print(model.score_model(mod))
     model.plot_model(mod)
 
