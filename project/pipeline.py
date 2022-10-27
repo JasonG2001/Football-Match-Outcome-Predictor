@@ -37,7 +37,7 @@ class Model:
         model = LinearRegression(n_jobs=-1)
         trained_model = model.fit(X_train, y_train)
 
-        return trained_model # r2 = 0.9850585149465104
+        return trained_model # 0.9850585149465104
 
 
     def linear_regression_pipeline(self):
@@ -46,8 +46,8 @@ class Model:
 
         pipe = make_pipeline(
 
-            StandardScaler(), # Scaling the data
-            LinearRegression() # Type of prediction
+            StandardScaler(),
+            LinearRegression()
 
         )
 
@@ -86,9 +86,27 @@ class Model:
         return trained_model # -9447.089006984184
 
 
-    def
+    def SVR_tuned(self):
 
+        X_train, X_test, y_train, y_test = self.train_test_split()
+
+        model = SVR()
+
+        kernel = ["linear", "rbf", "sigmoid", "poly"]
+        tol = [1e-3, 1e-4, 1e-5]
+        C = [1, 1.5, 2, 2.5, 3]
+
+        grid = dict(kernel = kernel, tol = tol, C = C)
+        cv = RepeatedKFold(n_splits=10, n_repeats=3, random_state=1)
+
+        grid_search = GridSearchCV(estimator=model, param_grid=grid, n_jobs=-1, cv=cv, scoring="neg_mean_squared_error")
+
+        trained_grid_search = grid_search.fit(X_train, y_train)
+        best_model = trained_grid_search.best_estimator_
+
+        return best_model # 0.989734139462195
     
+
     def plot_model(self, model):
 
         X_train, X_test, y_train, y_test = self.train_test_split()
@@ -116,7 +134,7 @@ if __name__ == "__main__":
     model = Model("premier_league")
     model2 = Model("ligue_2")
 
-    mod = model.SVR()
+    mod = model.SVR_tuned()
     print(model.score_model(mod))
     model.plot_model(mod)
 
