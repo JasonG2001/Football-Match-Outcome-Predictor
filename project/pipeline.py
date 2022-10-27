@@ -1,4 +1,5 @@
 from football_dataframe import FootballDataframe
+from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from sklearn.model_selection import train_test_split
@@ -59,6 +60,17 @@ class Model:
 
         return model # 0.9820554696946081
 
+
+    def gradient_boosting_regressor(self):
+
+        X_train, X_test, y_train, y_test = self.train_test_split()
+
+        model = GradientBoostingRegressor(random_state=0)
+
+        model.fit(X_train, y_train)
+
+        return model # 0.986401522797169
+
     
     def plot_model(self, model):
 
@@ -67,6 +79,8 @@ class Model:
         y_pred = model.predict(X_test)
 
         plt.scatter(y_pred, y_test)
+        plt.xlabel("prediction")
+        plt.ylabel("true value")
 
         return plt.show()
 
@@ -85,7 +99,7 @@ if __name__ == "__main__":
     model = Model("premier_league")
     model2 = Model("ligue_2")
 
-    mod = model.decision_tree_regressor()
+    mod = model.gradient_boosting_regressor()
     print(model.score_model(mod))
     model.plot_model(mod)
 
