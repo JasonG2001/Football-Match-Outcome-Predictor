@@ -17,6 +17,7 @@ class Model:
 
         self.football_dataframe = FootballDataframe(football_league)
 
+
     def train_test_split(self):
 
         df = self.football_dataframe.make_dataframe()
@@ -26,15 +27,16 @@ class Model:
         X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 
         return X_train, X_test, y_train, y_test
+        
 
     def simple_linear_regression(self):
 
         X_train, X_test, y_train, y_test = self.train_test_split()
         
         model = LinearRegression(n_jobs=-1)
-        model.fit(X_train, y_train)
+        trained_model = model.fit(X_train, y_train)
 
-        return model # r2 = 0.9850585149465104
+        return trained_model # r2 = 0.9850585149465104
 
 
     def linear_regression_pipeline(self):
@@ -48,9 +50,9 @@ class Model:
 
         )
 
-        pipe.fit(X_train, y_train)
+        trained_pipe = pipe.fit(X_train, y_train)
 
-        return pipe # 0.9850585149465104
+        return trained_pipe # 0.9850585149465104 
 
 
     def decision_tree_regressor(self):
@@ -58,9 +60,9 @@ class Model:
         X_train, X_test, y_train, y_test = self.train_test_split()
 
         model = DecisionTreeRegressor(random_state=0)
-        model.fit(X_train, y_train)
+        trained_model = model.fit(X_train, y_train)
 
-        return model # 0.9820554696946081
+        return trained_model # 0.9820554696946081 
 
 
     def gradient_boosting_regressor(self):
@@ -69,9 +71,9 @@ class Model:
 
         model = GradientBoostingRegressor(random_state=0)
 
-        model.fit(X_train, y_train)
+        trained_model = model.fit(X_train, y_train)
 
-        return model # 0.986401522797169
+        return trained_model # 0.986401522797169
 
     
     def plot_model(self, model):
@@ -101,7 +103,7 @@ if __name__ == "__main__":
     model = Model("premier_league")
     model2 = Model("ligue_2")
 
-    mod = model.gradient_boosting_regressor()
+    mod = model.linear_regression_pipeline()
     print(model.score_model(mod))
     model.plot_model(mod)
 
