@@ -12,16 +12,18 @@ class JoblibSave:
 
         clf = self.model.SVR_tuned()
 
-        return dump(clf, "baseline.joblib")
+        return dump(clf, "/home/jason2001/Football-Match-Outcome-Predictor/project/baseline.joblib")
 
 
     def load_model(self):
 
-        clf = load("baseline.joblib")
+        clf = load("/home/jason2001/Football-Match-Outcome-Predictor/project/baseline.joblib")
 
         return clf
 
 
 if __name__ == "__main__":
 
-    
+    joblib = JoblibSave("premier_league")
+    # joblib.dump_model()
+    print(joblib.load_model())
