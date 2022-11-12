@@ -4,12 +4,13 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from sklearn.model_selection import RepeatedKFold
 from sklearn.model_selection import GridSearchCV
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split as sklearn_train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVR
 from sklearn.tree import DecisionTreeRegressor
 import matplotlib.pyplot as plt
+
 
 
 class Model:
@@ -25,7 +26,7 @@ class Model:
         X = df[["Wins", "Streaks"]]
         y = df["Goals"]
 
-        X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+        X_train, X_test, y_train, y_test = sklearn_train_test_split(X, y, random_state=0)
 
         return X_train, X_test, y_train, y_test
 
@@ -55,7 +56,7 @@ class Model:
 
         return trained_pipe # 0.9850585149465104 
 
-
+    @property
     def decision_tree_regressor(self):
 
         X_train, X_test, y_train, y_test = self.train_test_split()
@@ -94,7 +95,7 @@ class Model:
 
         kernel = ["linear", "rbf", "sigmoid", "poly"]
         tol = [1e-3, 1e-4, 1e-5]
-        C = [1, 1.5, 2, 2.5, 3]
+        C = [1, 1.5, 2, 2.5]
 
         grid = dict(kernel = kernel, tol = tol, C = C)
         cv = RepeatedKFold(n_splits=10, n_repeats=3, random_state=1)
@@ -104,7 +105,7 @@ class Model:
         trained_grid_search = grid_search.fit(X_train, y_train)
         best_model = trained_grid_search.best_estimator_
 
-        return best_model # 0.989734139462195
+        return best_model # 0.989734139462195 
     
 
     def plot_model(self, model):
@@ -138,3 +139,4 @@ if __name__ == "__main__":
     print(model.score_model(mod))
     model.plot_model(mod)
 
+    model.decision_tree_regressor

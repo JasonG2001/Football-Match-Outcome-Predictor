@@ -8,7 +8,7 @@ class FootballDataframe:
         self.dataframe = DataframeAnalysis(football_league)
 
 
-    def get_list_of_teams(self) -> list:
+    def get_list_of_teams(self) -> list[str]:
 
         set_of_teams: set[str] = self.dataframe.get_teams()
 
