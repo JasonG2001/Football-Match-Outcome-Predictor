@@ -10,7 +10,7 @@ class FootballDataframe:
 
     def get_list_of_teams(self) -> list[str]:
 
-        set_of_teams: set[str] = self.dataframe.get_teams()
+        set_of_teams: set[str] = self.dataframe.get_team_template()
 
         list_of_teams: list[str] = list(set_of_teams)
 
