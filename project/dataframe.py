@@ -16,22 +16,33 @@ class DataframeAnalysis:
         
         result: str = self.result_finder.get_results(year)
             
-        try:
+        df = pd.read_csv(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{self.football_league}/{result}")
 
-            df = pd.read_csv(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{self.football_league}/{result}")
-
-            return df
-
-        except FileNotFoundError:
-
-            print("The football league or annual results cannot be found. Please check the league name is correct or year is correct.")
+        return df
 
 
     def get_elo(self) -> dict:
 
-        elo = pickle.load(open('/home/jason2001/Football-Match-Outcome-Predictor/project/elo_dict.pkl', 'rb'))
+        elo: dict[str,dict[str,float]] = pickle.load(open('/home/jason2001/Football-Match-Outcome-Predictor/project/elo_dict.pkl', 'rb'))
 
         return elo
+
+
+    def add_elo_feature(self, year: int):
+
+        links = self.get_dataframe(year).loc[:, "Link"]
+        elo: dict[str,dict[str,float]] = self.get_elo()
+        home_elos: list[float] = []
+        away_elos: list[float] = []
+
+        for _, link in enumerate(links):
+
+            home_elos.append(elo[link]["Elo_home"])
+            away_elos.append(elo[link]["Elo_away"])
+
+        
+
+
 
 
 
@@ -39,4 +50,4 @@ if __name__ == "__main__":
 
     dataframe1 = DataframeAnalysis("premier_league")
     dataframe2 = DataframeAnalysis("championship")
-    print(dataframe1.get_elo())
+    print(dataframe1.add_elo_feature("2021"))
