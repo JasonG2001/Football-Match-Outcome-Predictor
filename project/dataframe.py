@@ -86,19 +86,35 @@ class DataframeAnalysis:
             away_goals_so_far.append(team_template[away_team])
 
         return home_goals_so_far, away_goals_so_far
+    
 
-            
+    def get_wins_so_far(self, year: int):
 
-            
-        
-        #for record in 
+        team_template: dict[str,int] = self.get_team_template(year)
 
-        
+        df = self.get_dataframe(year).loc[:, ["Home_Team", "Away_Team", "Result"]]
+        home_wins_so_far: list[int] = []
+        away_wins_so_far: list[int] = []
 
+        for _, record in df.iterrows():
 
-    def get_wins_so_far(self):
+            home_team: str = record.loc["Home_Team"]
+            away_team: str = record.loc["Away_Team"]
 
-        pass
+            home_team_score: int = int(record.loc["Result"][self.INDEX_OF_HOME_TEAM_SCORE])
+            away_team_score: int = int(record.loc["Result"][self.INDEX_OF_AWAY_TEAM_SCORE])
+
+            if home_team_score > away_team_score:
+                team_template[home_team] += 1
+
+            elif home_team_score < away_team_score:
+                team_template[away_team] += 1
+
+            home_wins_so_far.append(team_template[home_team])
+            away_wins_so_far.append(team_template[away_team])
+
+        return home_wins_so_far, away_wins_so_far
+
 
 
     def get_streak_so_far(self):
@@ -116,4 +132,5 @@ if __name__ == "__main__":
     dataframe1 = DataframeAnalysis("premier_league")
     dataframe2 = DataframeAnalysis("championship")
     #print(dataframe1.get_home_and_away_elos("2021"))
-    print(dataframe1.get_home_and_away_goals_so_far("2021"))
+    #print(dataframe1.get_home_and_away_goals_so_far("2021"))
+    print(dataframe1.get_wins_so_far("2021"))
