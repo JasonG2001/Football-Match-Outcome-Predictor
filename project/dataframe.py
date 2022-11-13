@@ -178,7 +178,7 @@ if __name__ == "__main__":
 
     dataframe1 = DataframeAnalysis("premier_league")
     dataframe2 = DataframeAnalysis("championship")
-    #print(dataframe1.get_home_and_away_elos("2021"))
+    print(dataframe1.get_home_and_away_elos("2021"))
     #print(dataframe1.get_home_and_away_goals_so_far("2021"))
     #print(dataframe1.get_wins_losses_draws_so_far("2021"))
-    print(dataframe1.get_current_streak("2021"))
+    #print(dataframe1.get_current_streak("2021"))
