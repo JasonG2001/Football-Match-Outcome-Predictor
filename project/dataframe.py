@@ -134,10 +134,39 @@ class DataframeAnalysis:
         return home_wins_so_far, away_wins_so_far, home_losses_so_far, away_losses_so_far, home_draws_so_far, away_draws_so_far
 
 
+    def get_current_streak(self, year: int):
 
-    def get_streak_so_far(self):
+        team_streaks_template: dict[str:int] = self.get_team_template(year)
 
-        pass
+        df = self.get_dataframe(year).loc[:, ["Home_Team", "Away_Team", "Result"]]
+
+        current_home_streak: list[int] = []
+        current_away_streak: list[int] = []
+
+        for _, record in df.iterrows():
+
+            home_team: str = record.loc["Home_Team"]
+            away_team: str = record.loc["Away_Team"]
+
+            current_home_streak.append(team_streaks_template[home_team])
+            current_away_streak.append(team_streaks_template[away_team])
+
+            home_team_score: int = int(record.loc["Result"][self.INDEX_OF_HOME_TEAM_SCORE])
+            away_team_score: int = int(record.loc["Result"][self.INDEX_OF_AWAY_TEAM_SCORE])
+
+            if home_team_score > away_team_score:
+                team_streaks_template[home_team] += 1
+                team_streaks_template[away_team] = 0
+
+            elif home_team_score < away_team_score:
+                team_streaks_template[home_team] = 0
+                team_streaks_template[away_team] += 1
+
+            else:
+                team_streaks_template[home_team] = 0
+                team_streaks_template[away_team] = 0
+
+        return current_home_streak, current_away_streak
 
         
 
@@ -151,4 +180,5 @@ if __name__ == "__main__":
     dataframe2 = DataframeAnalysis("championship")
     #print(dataframe1.get_home_and_away_elos("2021"))
     #print(dataframe1.get_home_and_away_goals_so_far("2021"))
-    print(dataframe1.get_wins_losses_draws_so_far("2021"))
+    #print(dataframe1.get_wins_losses_draws_so_far("2021"))
+    print(dataframe1.get_current_streak("2021"))
