@@ -77,14 +77,14 @@ class DataframeAnalysis:
             home_team: str = record.loc["Home_Team"]
             away_team: str = record.loc["Away_Team"]
 
+            home_goals_so_far.append(team_template[home_team]) 
+            away_goals_so_far.append(team_template[away_team])
+
             home_team_score: int = int(record.loc["Result"][self.INDEX_OF_HOME_TEAM_SCORE])
             away_team_score: int = int(record.loc["Result"][self.INDEX_OF_AWAY_TEAM_SCORE])
 
             team_template[home_team] += home_team_score
             team_template[away_team] += away_team_score
-
-            home_goals_so_far.append(team_template[home_team]) # Shift order to top as it is based on previous game results
-            away_goals_so_far.append(team_template[away_team])
 
         return home_goals_so_far, away_goals_so_far
     
@@ -109,6 +109,13 @@ class DataframeAnalysis:
             home_team: str = record.loc["Home_Team"]
             away_team: str = record.loc["Away_Team"]
 
+            home_wins_so_far.append(team_wins_template[home_team])
+            away_wins_so_far.append(team_wins_template[away_team])
+            home_losses_so_far.append(team_losses_template[home_team])
+            away_losses_so_far.append(team_losses_template[away_team])
+            home_draws_so_far.append(team_draws_template[home_team])
+            away_draws_so_far.append(team_draws_template[away_team])
+
             home_team_score: int = int(record.loc["Result"][self.INDEX_OF_HOME_TEAM_SCORE])
             away_team_score: int = int(record.loc["Result"][self.INDEX_OF_AWAY_TEAM_SCORE])
 
@@ -123,13 +130,6 @@ class DataframeAnalysis:
             else:
                 team_draws_template[home_team] += 1
                 team_draws_template[away_team] += 1
-
-            home_wins_so_far.append(team_wins_template[home_team])
-            away_wins_so_far.append(team_wins_template[away_team])
-            home_losses_so_far.append(team_losses_template[home_team])
-            away_losses_so_far.append(team_losses_template[away_team])
-            home_draws_so_far.append(team_draws_template[home_team])
-            away_draws_so_far.append(team_draws_template[away_team])
 
         return home_wins_so_far, away_wins_so_far, home_losses_so_far, away_losses_so_far, home_draws_so_far, away_draws_so_far
 
