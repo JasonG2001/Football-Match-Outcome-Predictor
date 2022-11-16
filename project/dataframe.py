@@ -169,16 +169,39 @@ class DataframeAnalysis:
         return current_home_streak, current_away_streak
 
         
+    def get_result(self, year: int):
 
+        df = self.get_dataframe(year).loc[:, ["Result"]]
 
+        home_results: list[str] = []
+        away_results: list[str] = []
 
+        for _, result in df.iterrows():
+
+            home_score: int = int(result.loc["Result"][self.INDEX_OF_HOME_TEAM_SCORE])
+            away_score: int = int(result.loc["Result"][self.INDEX_OF_AWAY_TEAM_SCORE])
+
+            if home_score > away_score:
+                home_results.append("win")
+                away_results.append("lose")
+
+            elif home_score < away_score:
+                home_results.append("lose")
+                away_results.append("win")
+
+            else:
+                home_results.append("draw")
+                away_results.append("draw")
+
+        return home_results, away_results
 
 
 if __name__ == "__main__":
 
     dataframe1 = DataframeAnalysis("premier_league")
     dataframe2 = DataframeAnalysis("championship")
-    print(dataframe1.get_home_and_away_elos("2021"))
+    #print(dataframe1.get_home_and_away_elos("2021"))
     #print(dataframe1.get_home_and_away_goals_so_far("2021"))
     #print(dataframe1.get_wins_losses_draws_so_far("2021"))
     #print(dataframe1.get_current_streak("2021"))
+    print(dataframe1.get_result("2021"))

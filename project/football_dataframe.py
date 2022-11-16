@@ -17,6 +17,7 @@ class FootballDataframe:
         home_goals_so_far, away_goals_so_far = self.dataframe.get_home_and_away_goals_so_far(year)
         home_wins_so_far, away_wins_so_far, home_losses_so_far, away_losses_so_far, home_draws_so_far, away_draws_so_far = self.dataframe.get_wins_losses_draws_so_far(year)
         current_home_streak, current_away_streak = self.dataframe.get_current_streak(year)
+        home_results, away_results = self.dataframe.get_result(year)
 
         df["Home_Elos"] = home_elos
         df["Away_Elos"] = away_elos
@@ -30,6 +31,9 @@ class FootballDataframe:
         df["Away_Draws"] = away_draws_so_far
         df["Home_Streak"] = current_home_streak
         df["Away_Streak"] = current_away_streak
+
+        df["Home_Result"] = home_results
+        df["Away_Result"] = away_results
 
         return df
 
