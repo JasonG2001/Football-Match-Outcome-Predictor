@@ -38,7 +38,19 @@ class FootballDataframe:
         return df
 
 
+    def clean_dataframe(self, year: int):
+
+        df = self.make_dataframe(year)
+        df["Home_Team_Code"] = df["Home_Team"].astype("category").cat.codes
+        df["Away_Team_Code"] = df["Away_Team"].astype("category").cat.codes
+        df["Home_Result_Code"] = df["Home_Result"].astype("category").cat.codes
+        df["Away_Result_Code"] = df["Away_Result"].astype("category").cat.codes
+
+        return df
+
+
 if __name__ == "__main__":
 
     football_dataframe = FootballDataframe("premier_league")
-    print(football_dataframe.make_dataframe("2021"))
+    print(football_dataframe.make_dataframe(2021))
+    print(football_dataframe.clean_dataframe(2021))
