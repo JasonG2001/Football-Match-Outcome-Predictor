@@ -20,17 +20,17 @@ class Model:
         self.football_dataframe = FootballDataframe(football_league)
 
 
-    def train_test_split(self):
+    def split_into_train_and_test(self, year: int):
 
-        df = self.football_dataframe.make_dataframe()
-        X = df[["Wins", "Streaks"]]
-        y = df["Goals"]
-
-        X_train, X_test, y_train, y_test = sklearn_train_test_split(X, y, random_state=0)
+        df = self.football_dataframe.clean_dataframe(year)
+        X = df.drop(["Home_Team", "Away_Team", "Home_Result", "Away_Result"], axis=1)
+        y = df.loc[:, ["Home_Result_Code", "Away_Result_Code"]]
+        
+        X_train, X_test, y_train, y_test = sklearn_train_test_split(X, y, test_size=0.2, random_state=0)
 
         return X_train, X_test, y_train, y_test
 
-
+    '''
     def simple_linear_regression(self):
 
         X_train, X_test, y_train, y_test = self.train_test_split()
@@ -128,15 +128,10 @@ class Model:
         y_pred = model.predict(X_test)
 
         return r2_score(y_pred, y_test)
-
+    '''
 
 if __name__ == "__main__":
 
     model = Model("premier_league")
-    model2 = Model("ligue_2")
-
-    mod = model.SVR_tuned()
-    print(model.score_model(mod))
-    model.plot_model(mod)
-
-    model.decision_tree_regressor
+    print(model.split_into_train_and_test(2021))
+    
