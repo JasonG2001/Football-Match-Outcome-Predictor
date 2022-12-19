@@ -1,58 +1,51 @@
 from result_finder import ResultFinder
-import os
+from typing import Dict, List, Set, Type
 import pandas as pd
 import pickle
 
 class DataframeAnalysis:
 
-    def __init__(self, football_league: str):
+    def __init__(self) -> None:
 
-        self.football_league: str = football_league
-        self.result_finder = ResultFinder(football_league)
+        self.result_finder = ResultFinder()
         self.INDEX_OF_HOME_TEAM_SCORE: int = 0
         self.INDEX_OF_AWAY_TEAM_SCORE: int = 2
 
 
-    def get_dataframe(self, year: int):
+    def get_dataframe(self, football_league: str, year: int) -> Type[pd.DataFrame]:
         
-        result: str = self.result_finder.get_results(year)
+        result: str = self.result_finder.get_results(football_league, year)
             
-        df = pd.read_csv(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{self.football_league}/{result}")
+        df: Type[pd.Dataframe] = pd.read_csv(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{football_league}/{result}")
 
         return df
 
 
-    def get_elo(self) -> dict:
+    def get_elo(self) -> Dict[str,Dict[str,float]]:
 
-        elo: dict[str,dict[str,float]] = pickle.load(open('/home/jason2001/Football-Match-Outcome-Predictor/project/elo_dict.pkl', 'rb'))
+        elo: Dict[str,Dict[str,float]] = pickle.load(open('/home/jason2001/Football-Match-Outcome-Predictor/project/elo_dict.pkl', 'rb'))
 
         return elo
 
 
-    def get_team_template(self, year: int):
+    def get_team_template(self, football_league: str, year: int) -> Dict[str,int]:
 
-        home_teams = self.get_dataframe(year)["Home_Team"]
-        away_teams = self.get_dataframe(year)["Away_Team"]
+        home_teams: Type[pd.DataFrame] = self.get_dataframe(football_league, year)["Home_Team"]
+        away_teams: Type[pd.DataFrame] = self.get_dataframe(football_league, year)["Away_Team"]
 
-        teams: set(str) = set(home_teams)
+        teams: Set(str) = set(home_teams)
         
         teams.update(set(away_teams))
 
-        empty_dictionary: dict[str,int] = {}
-
-        for team in teams:
-
-            empty_dictionary[team] = 0
-
-        return empty_dictionary
+        return {team:0 for team in teams}
 
 
-    def get_home_and_away_elos(self, year: int):
+    def get_home_and_away_elos(self, football_league: str, year: int) -> List[float]:
 
-        links = self.get_dataframe(year).loc[:, "Link"]
-        elo: dict[str,dict[str,float]] = self.get_elo()
-        home_elos: list[float] = []
-        away_elos: list[float] = []
+        links: Type[pd.DataFrame] = self.get_dataframe(football_league, year).loc[:, "Link"]
+        elo: Dict[str,Dict[str,float]] = self.get_elo()
+        home_elos: List[float] = []
+        away_elos: List[float] = []
 
         link: str
         for _, link in enumerate(links):
@@ -63,14 +56,14 @@ class DataframeAnalysis:
         return home_elos, away_elos
 
 
-    def get_home_and_away_goals_so_far(self, year: int):
+    def get_home_and_away_goals_so_far(self, football_league: str, year: int) -> List[int]:
 
-        team_template: dict[str,int] = self.get_team_template(year)
+        team_template: Dict[str,int] = self.get_team_template(football_league, year)
 
-        df = self.get_dataframe(year).loc[:, ["Home_Team", "Away_Team", "Result"]]
+        df: Type[pd.DataFrame] = self.get_dataframe(football_league, year).loc[:, ["Home_Team", "Away_Team", "Result"]]
         
-        home_goals_so_far: list[int] = []
-        away_goals_so_far: list[int] = []
+        home_goals_so_far: List[int] = []
+        away_goals_so_far: List[int] = []
 
         for _, record in df.iterrows():
 
@@ -89,20 +82,21 @@ class DataframeAnalysis:
         return home_goals_so_far, away_goals_so_far
     
 
-    def get_wins_losses_draws_so_far(self, year: int):
+    def get_wins_losses_draws_so_far(self, football_league: str, year: int) -> List[int]:
 
-        team_wins_template: dict[str,int] = self.get_team_template(year)
-        team_losses_template: dict[str,int] = self.get_team_template(year)
-        team_draws_template: dict[str,int] = self.get_team_template(year)
+        team_wins_template: Dict[str,int] = self.get_team_template(football_league, year)
+        team_losses_template: Dict[str,int] = self.get_team_template(football_league, year)
+        team_draws_template: Dict[str,int] = self.get_team_template(football_league, year)
 
-        df = self.get_dataframe(year).loc[:, ["Home_Team", "Away_Team", "Result"]]
+        df: Type[pd.DataFrame] = self.get_dataframe(football_league, year). \
+        loc[:, ["Home_Team", "Away_Team", "Result"]]
         
-        home_wins_so_far: list[int] = []
-        away_wins_so_far: list[int] = []
-        home_losses_so_far: list[int] = []
-        away_losses_so_far: list[int] = []
-        home_draws_so_far: list[int] = []
-        away_draws_so_far: list[int] = []
+        home_wins_so_far: List[int] = []
+        away_wins_so_far: List[int] = []
+        home_losses_so_far: List[int] = []
+        away_losses_so_far: List[int] = []
+        home_draws_so_far: List[int] = []
+        away_draws_so_far: List[int] = []
 
         for _, record in df.iterrows():
 
@@ -134,14 +128,15 @@ class DataframeAnalysis:
         return home_wins_so_far, away_wins_so_far, home_losses_so_far, away_losses_so_far, home_draws_so_far, away_draws_so_far
 
 
-    def get_current_streak(self, year: int):
+    def get_current_streak(self, football_league: str, year: int) -> List[int]:
 
-        team_streaks_template: dict[str:int] = self.get_team_template(year)
+        team_streaks_template: Dict[str:int] = self.get_team_template(football_league, year)
 
-        df = self.get_dataframe(year).loc[:, ["Home_Team", "Away_Team", "Result"]]
+        df: Type[pd.DataFrame] = self.get_dataframe(football_league, year). \
+        loc[:, ["Home_Team", "Away_Team", "Result"]]
 
-        current_home_streak: list[int] = []
-        current_away_streak: list[int] = []
+        current_home_streak: List[int] = []
+        current_away_streak: List[int] = []
 
         for _, record in df.iterrows():
 
@@ -169,12 +164,12 @@ class DataframeAnalysis:
         return current_home_streak, current_away_streak
 
         
-    def get_result(self, year: int):
+    def get_result(self, football_league: str, year: int) -> List[int]:
 
-        df = self.get_dataframe(year).loc[:, ["Result"]]
+        df: Type[pd.DataFrame] = self.get_dataframe(football_league, year).loc[:, ["Result"]]
 
-        home_results: list[str] = []
-        away_results: list[str] = []
+        home_results: List[str] = []
+        away_results: List[str] = []
 
         for _, result in df.iterrows():
 
@@ -198,10 +193,9 @@ class DataframeAnalysis:
 
 if __name__ == "__main__":
 
-    dataframe1 = DataframeAnalysis("premier_league")
-    dataframe2 = DataframeAnalysis("championship")
-    #print(dataframe1.get_home_and_away_elos("2021"))
-    #print(dataframe1.get_home_and_away_goals_so_far("2021"))
-    #print(dataframe1.get_wins_losses_draws_so_far("2021"))
-    #print(dataframe1.get_current_streak("2021"))
-    print(dataframe1.get_result("2021"))
+    dataframe = DataframeAnalysis()
+    print(dataframe.get_home_and_away_elos("premier_league", 2021))
+    print(dataframe.get_home_and_away_goals_so_far("premier_league", 2021))
+    print(dataframe.get_wins_losses_draws_so_far("premier_league", 2021))
+    print(dataframe.get_current_streak("premier_league", 2021))
+    print(dataframe.get_result("premier_league", 2021))
