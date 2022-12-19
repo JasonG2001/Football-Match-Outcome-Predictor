@@ -1,28 +1,30 @@
+from typing import List
 import os
 
 class ResultFinder:
 
-    def __init__(self, football_league: str):
+    def __init__(self) -> None:
 
-        self.football_league: str = football_league
         self.INDEX_OF_THOUSANDS: int = 8
         self.INDEX_OF_ONES: int = 12
 
-    def go_to_football_league(self) -> None:
+
+    def go_to_football_league(self, football_league: str) -> None:
 
         try:
 
-            os.chdir(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{self.football_league}")
+            os.chdir(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{football_league}")
 
         except FileNotFoundError:
 
             print("This football league results cannot be found, please check the spelling.")
 
-    def get_results(self, year: int) -> str:
 
-        self.go_to_football_league()
+    def get_results(self, football_league: str, year: int) -> str:
 
-        results: list[str] = os.listdir(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{self.football_league}")
+        self.go_to_football_league(football_league)
+
+        results: list[str] = os.listdir(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{football_league}")
 
         for result in results:
 
@@ -31,11 +33,11 @@ class ResultFinder:
                 return result
 
             
-    def get_list_of_years(self) -> list:
+    def get_list_of_years(self, football_league: str) -> List[int]:
         
-        self.go_to_football_league()
+        self.go_to_football_league(football_league)
 
-        results: list[str] = os.listdir(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{self.football_league}")
+        results: list[str] = os.listdir(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results/{football_league}")
 
         years: list[int] = []
 
@@ -48,13 +50,19 @@ class ResultFinder:
         return years
 
 
+    def get_list_of_leagues(self) -> List[str]:
 
+        league_list: List[str] = [league for league in 
+        os.listdir(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/Football/Results")]
+
+        return league_list
 
 
 if __name__ == "__main__":
 
-    result_finder = ResultFinder("premier_league")
-    print(result_finder.get_list_of_years())
+    result_finder = ResultFinder()
+    print(result_finder.get_list_of_years("premier_league"))
+    print(result_finder.get_list_of_leagues())
 
 
  
