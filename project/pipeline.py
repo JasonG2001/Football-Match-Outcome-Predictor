@@ -41,11 +41,11 @@ class Model:
         for league in leagues:
             X_train, X_test, y_train, y_test = self.split_into_train_and_test(league, year)
             trained_model = trained_model.fit(X_train, y_train)
-           
+        '''
         y_pred = trained_model.predict(X_test)
-        acc = accuracy_score(y_test, y_pred)
+        acc = accuracy_score(y_test, y_pred)'''
 
-        return acc
+        return trained_model
 
 
     def logistic_regressor(self, year: int) -> float:
@@ -58,10 +58,7 @@ class Model:
             X_train, X_test, y_train, y_test = self.split_into_train_and_test(league, year)
             trained_model = trained_model.fit(X_train, y_train)
 
-        y_pred = trained_model.predict(X_test)
-        acc = accuracy_score(y_test, y_pred)
-
-        return acc
+        return trained_model
 
 
     def k_nearest_neighbour(self, year: int) -> float:
@@ -74,10 +71,7 @@ class Model:
             X_train, X_test, y_train, y_test = self.split_into_train_and_test(league, year)
             trained_model = trained_model.fit(X_train, y_train)
 
-        y_pred = trained_model.predict(X_test)
-        acc = accuracy_score(y_test, y_pred)
-
-        return acc
+        return trained_model
 
 
     def decision_tree_classifier(self, year: int) -> float:
@@ -90,10 +84,7 @@ class Model:
             X_train, X_test, y_train, y_test = self.split_into_train_and_test(league, year)
             trained_model = trained_model.fit(X_train, y_train)
 
-        y_pred = trained_model.predict(X_test)
-        acc = accuracy_score(y_test, y_pred)
-
-        return acc
+        return trained_model
 
 
     def gaussiannb(self, year: int) -> float:
@@ -106,10 +97,7 @@ class Model:
             X_train, X_test, y_train, y_test = self.split_into_train_and_test(league, year)
             trained_model = trained_model.fit(X_train, y_train)
 
-        y_pred = trained_model.predict(X_test)
-        acc: float = accuracy_score(y_test, y_pred)
-
-        return acc
+        return trained_model
 
 
     def svm(self, year: int) -> float:
@@ -122,10 +110,7 @@ class Model:
             X_train, X_test, y_train, y_test = self.split_into_train_and_test(league, year)
             trained_model = trained_model.fit(X_train, y_train)
 
-        y_pred = trained_model.predict(X_test)
-        acc: float = accuracy_score(y_test, y_pred)
-
-        return acc
+        return trained_model
 
 
 if __name__ == "__main__":

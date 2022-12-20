@@ -3,27 +3,18 @@ from pipeline import Model
 
 class JoblibSave:
 
-    def __init__(self, football_league: str):
+    def dump_model(self, model) -> None:
 
-        self.model = Model(football_league)
-
-
-    def dump_model(self):
-
-        clf = self.model.SVR_tuned()
-
-        return dump(clf, "/home/jason2001/Football-Match-Outcome-Predictor/project/baseline.joblib")
+        dump(model, "/home/jason2001/Football-Match-Outcome-Predictor/project/baseline.joblib")
 
 
-    def load_model(self):
+    def load_model(self) -> None:
 
-        clf = load("/home/jason2001/Football-Match-Outcome-Predictor/project/baseline.joblib")
-
-        return clf
+        load("/home/jason2001/Football-Match-Outcome-Predictor/project/baseline.joblib")
 
 
 if __name__ == "__main__":
-
-    joblib = JoblibSave("premier_league")
-    # joblib.dump_model()
-    print(joblib.load_model())
+    joblib = JoblibSave()
+    model_class = Model()
+    model = model_class.decision_tree_classifier(2021)
+    joblib.dump_model(model)
