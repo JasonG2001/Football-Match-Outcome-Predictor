@@ -61,7 +61,7 @@ class ResultFinder:
 if __name__ == "__main__":
 
     result_finder = ResultFinder()
-    print(result_finder.get_list_of_years("premier_league"))
+    print(result_finder.get_list_of_years())
     print(result_finder.get_list_of_leagues())
 
 

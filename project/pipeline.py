@@ -41,7 +41,7 @@ class Model:
         for league in leagues:
             X_train, X_test, y_train, y_test = self.split_into_train_and_test(league, year)
             trained_model = trained_model.fit(X_train, y_train)
-            
+           
         y_pred = trained_model.predict(X_test)
         acc = accuracy_score(y_test, y_pred)
 
