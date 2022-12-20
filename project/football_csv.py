@@ -1,21 +1,22 @@
 from football_dataframe import FootballDataframe
+from typing import Type
+import pandas as pd
 
 class MakeCSV:
 
-    def __init__(self, football_league: str):
+    def __init__(self) -> None:
 
-        self.football_league: str = football_league 
-        self.football_dataframe = FootballDataframe(football_league)
+        self.football_dataframe = FootballDataframe()
 
 
-    def convert_to_csv(self, year: int):
+    def convert_to_csv(self, football_league: str, year: int) -> None:
 
-        df = self.football_dataframe.clean_dataframe(year)
+        df: Type[pd.DataFrame] = self.football_dataframe.clean_dataframe(football_league, year)
 
-        return df.to_csv(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/{self.football_league}_{year}_cleaned_dataset.csv")
+        df.to_csv(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/{football_league}_{year}_cleaned_dataset.csv")
 
 
 if __name__ == "__main__":
 
-    csv = MakeCSV("premier_league")
-    csv.convert_to_csv(2021)
+    csv = MakeCSV()
+    csv.convert_to_csv("premier_league", 2021)
