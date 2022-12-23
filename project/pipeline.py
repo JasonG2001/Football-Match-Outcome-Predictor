@@ -1,6 +1,5 @@
 from football_dataframe import FootballDataframe
 from result_finder import ResultFinder
-from sklearn.feature_selection import SelectKBest
 from sklearn.ensemble import RandomForestClassifier as sklearn_random_forest
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
@@ -25,7 +24,11 @@ class Model:
     def split_into_train_and_test(self, football_league: str, year: int):
 
         df = self.football_dataframe.clean_dataframe(football_league, year)
-        X = df.drop(["Home_Team", "Away_Team", "Home_Result", "Away_Result", "Home_Result_Code", "Away_Result_Code"], axis=1)
+
+        X = df.drop(["Home_Team", "Away_Team", "Home_Result", "Away_Result", "Home_Result_Code", 
+        "Away_Result_Code", "Round", "Home_Team_Code", "Away_Team_Code", "Home_Draws", 
+        "Away_Draws", "Home_Streak", "Away_Streak"], axis=1)
+
         y = df["Home_Result_Code"]
         
         X_train, X_test, y_train, y_test = sklearn_train_test_split(X, y, test_size=0.2, random_state=0)
