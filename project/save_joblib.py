@@ -16,5 +16,5 @@ class JoblibSave:
 if __name__ == "__main__":
     joblib = JoblibSave()
     model_class = Model()
-    model = model_class.decision_tree_classifier(2021)
+    model = model_class.random_forest_classifier(2021)
     joblib.dump_model(model)
