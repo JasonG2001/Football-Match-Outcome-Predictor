@@ -3,14 +3,15 @@ from result_finder import ResultFinder
 from sklearn.ensemble import RandomForestClassifier as sklearn_random_forest
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
-from sklearn.model_selection import train_test_split as sklearn_train_test_split
+from sklearn.model_selection import RandomizedSearchCV, train_test_split as sklearn_train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
-from typing import List
+from typing import Dict, List, Type, Union
+import pandas as pd
 
 
 class Model:
@@ -23,7 +24,7 @@ class Model:
 
     def split_into_train_and_test(self, football_league: str, year: int):
 
-        df = self.football_dataframe.clean_dataframe(football_league, year)
+        df: Type[pd.DataFrame] = self.football_dataframe.clean_dataframe(football_league, year)
 
         X = df.drop(["Home_Team", "Away_Team", "Home_Result", "Away_Result", "Home_Result_Code", 
         "Away_Result_Code", "Round", "Home_Team_Code", "Away_Team_Code", "Home_Draws", 
@@ -39,17 +40,25 @@ class Model:
     def random_forest_classifier(self, year: int) -> float:
 
         leagues: List[str] = self.result_finder.get_list_of_leagues()
-        trained_model = make_pipeline(StandardScaler(), sklearn_random_forest())
+        pipeline = make_pipeline(StandardScaler(), sklearn_random_forest())
+
+        param_grid: Dict[str,List[Union[str,float]]] = {
+            'randomforestclassifier__n_estimators': [10, 50, 100, 200], # 50
+            'randomforestclassifier__max_depth': [None, 5, 10, 15], # 5
+            'randomforestclassifier__min_samples_split': [2, 5, 10], # 5/10
+            'randomforestclassifier__min_samples_leaf': [1, 2, 4], # 2
+            'randomforestclassifier__max_features': ["auto", "sqrt", "log2"]},
+        grid_search = RandomizedSearchCV(estimator=pipeline, param_distributions=param_grid, cv=5, scoring="accuracy")
 
         league: str
         for league in leagues:
             X_train, X_test, y_train, y_test = self.split_into_train_and_test(league, year)
-            trained_model = trained_model.fit(X_train, y_train)
+            grid_search = grid_search.fit(X_train, y_train)
         
-        y_pred = trained_model.predict(X_test)
+        y_pred = grid_search.predict(X_test)
         acc = accuracy_score(y_test, y_pred)
 
-        return trained_model, acc
+        return grid_search.best_params_, acc
 
 
     def logistic_regressor(self, year: int) -> float:
