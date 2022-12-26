@@ -1,12 +1,12 @@
 from football_dataframe import FootballDataframe
 from result_finder import ResultFinder
-from sklearn.ensemble import RandomForestClassifier as sklearn_random_forest
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, train_test_split as sklearn_train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.pipeline import make_pipeline
+from sklearn.pipeline import make_pipeline, Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
@@ -37,10 +37,10 @@ class Model:
         return X_train, X_test, y_train, y_test
 
 
-    def random_forest_classifier(self, year: int) -> float:
+    def random_forest_classifier(self, year: int) -> Union[float,Pipeline]:
 
         leagues: List[str] = self.result_finder.get_list_of_leagues()
-        pipeline = make_pipeline(StandardScaler(), sklearn_random_forest(n_estimators=250, min_samples_split=2, 
+        pipeline: Pipeline = make_pipeline(StandardScaler(), RandomForestClassifier(n_estimators=250, min_samples_split=2, 
             min_samples_leaf=12, max_features="auto", max_depth=40))
         '''
         param_grid: Dict[str,List[Union[str,float]]] = {
@@ -57,15 +57,15 @@ class Model:
             pipeline = pipeline.fit(X_train, y_train)
         
         y_pred = pipeline.predict(X_test)
-        acc = accuracy_score(y_test, y_pred)
+        acc: float = accuracy_score(y_test, y_pred)
 
         return pipeline, acc # 0.4, 0.5
 
 
-    def logistic_regressor(self, year: int) -> float:
+    def logistic_regressor(self, year: int) -> Union[float,Pipeline]:
 
         leagues: List[str] = self.result_finder.get_list_of_leagues()
-        pipeline = make_pipeline(StandardScaler(), LogisticRegression(C=0.5, tol=0.1, solver="sag"))
+        pipeline: Pipeline = make_pipeline(StandardScaler(), LogisticRegression(C=0.5, tol=0.1, solver="sag"))
         '''
         param_grid: Dict[str,List[Union[str,float]]] = {
             'logisticregression__C': [0.5, 1.0, 2.0, 3.0, 4.0, 5.0], # 0.5
@@ -80,15 +80,15 @@ class Model:
             pipeline = pipeline.fit(X_train, y_train)
 
         y_pred = pipeline.predict(X_test)
-        acc = accuracy_score(y_test, y_pred)
+        acc: float = accuracy_score(y_test, y_pred)
 
         return pipeline, acc # 4.4e-1, 0.42
 
 
-    def k_nearest_neighbour(self, year: int) -> float:
+    def k_nearest_neighbour(self, year: int) -> Union[float,Pipeline]:
 
         leagues: List[str] = self.result_finder.get_list_of_leagues()
-        pipeline = make_pipeline(StandardScaler(), KNeighborsClassifier(n_neighbors=6, 
+        pipeline: Pipeline = make_pipeline(StandardScaler(), KNeighborsClassifier(n_neighbors=6, 
             weights="uniform", algorithm="ball_tree", leaf_size=29, p=7))
         '''
         param_grid: Dict[str,List[Union[str,float]]] = {
@@ -106,15 +106,15 @@ class Model:
             pipeline = pipeline.fit(X_train, y_train)
 
         y_pred = pipeline.predict(X_test)
-        acc = accuracy_score(y_test, y_pred)
+        acc: float = accuracy_score(y_test, y_pred)
 
         return pipeline, acc # 0.44, 0.44
 
 
-    def decision_tree_classifier(self, year: int) -> float:
+    def decision_tree_classifier(self, year: int) -> Union[float,Pipeline]:
 
         leagues: List[str] = self.result_finder.get_list_of_leagues()
-        pipeline = make_pipeline(StandardScaler(), DecisionTreeClassifier(max_depth=5, min_samples_split=5,
+        pipeline: Pipeline = make_pipeline(StandardScaler(), DecisionTreeClassifier(max_depth=5, min_samples_split=5,
             min_samples_leaf=8, criterion="entropy", splitter="random", max_features="log2"))
         '''
         param_grid: Dict[str,List[Union[str,float]]] = {
@@ -134,15 +134,15 @@ class Model:
             pipeline = pipeline.fit(X_train, y_train)
 
         y_pred = pipeline.predict(X_test)
-        acc = accuracy_score(y_test, y_pred)
+        acc: float = accuracy_score(y_test, y_pred)
 
         return pipeline, acc # 0.4, 0.5
 
 
-    def gaussiannb(self, year: int) -> float:
+    def gaussiannb(self, year: int) -> Union[float,Pipeline]:
 
         leagues: List[str] = self.result_finder.get_list_of_leagues()
-        pipeline = make_pipeline(StandardScaler(), GaussianNB(var_smoothing=1e-6))
+        pipeline: Pipeline = make_pipeline(StandardScaler(), GaussianNB(var_smoothing=1e-6))
         '''
         param_grid: Dict[str,List[Union[str,float]]] = {
             'gaussiannb__var_smoothing': [1e-9, 1e-8, 1e-7, 1e-6, 1e-5]
@@ -156,15 +156,15 @@ class Model:
             pipeline = pipeline.fit(X_train, y_train)
 
         y_pred = pipeline.predict(X_test)
-        acc = accuracy_score(y_test, y_pred)
+        acc: float = accuracy_score(y_test, y_pred)
 
         return pipeline, acc # 0.4, 0.4
 
 
-    def svm(self, year: int) -> float:
+    def svm(self, year: int) -> Union[float,Pipeline]:
 
         leagues: List[str] = self.result_finder.get_list_of_leagues()
-        pipeline = make_pipeline(StandardScaler(), SVC(C=0.1, kernel="linear", degree=6, 
+        pipeline: Pipeline = make_pipeline(StandardScaler(), SVC(C=0.1, kernel="linear", degree=6, 
             gamma="scale", tol=1, cache_size=200))
         '''
         param_grid: Dict[str,List[Union[str,float]]] = {
@@ -184,7 +184,7 @@ class Model:
             pipeline = pipeline.fit(X_train, y_train)
 
         y_pred = pipeline.predict(X_test)
-        acc = accuracy_score(y_test, y_pred)
+        acc: float = accuracy_score(y_test, y_pred)
 
         return pipeline, acc # 0.4, 0.42
 
