@@ -27,8 +27,7 @@ class Model:
         df: Type[pd.DataFrame] = self.football_dataframe.clean_dataframe(football_league, year)
 
         X = df.drop(["Home_Team", "Away_Team", "Home_Result", "Away_Result", "Home_Result_Code", 
-        "Away_Result_Code", "Round", "Home_Team_Code", "Away_Team_Code", "Home_Draws", 
-        "Away_Draws", "Home_Streak", "Away_Streak"], axis=1)
+        "Away_Result_Code", "Home_Team_Code", "Away_Team_Code", "Home_Draws", "Away_Draws"], axis=1)
 
         y = df["Home_Result_Code"]
         
