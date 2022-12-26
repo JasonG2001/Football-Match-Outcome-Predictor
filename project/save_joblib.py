@@ -3,18 +3,19 @@ from pipeline import Model
 
 class JoblibSave:
 
-    def dump_model(self, model) -> None:
+    def dump_model(self, model, name: str) -> None:
 
-        dump(model, "/home/jason2001/Football-Match-Outcome-Predictor/project/baseline.joblib")
+        dump(model, f"/home/jason2001/Football-Match-Outcome-Predictor/project/{name}.joblib")
 
 
-    def load_model(self) -> None:
+    def load_model(self, name: str) -> None:
 
-        load("/home/jason2001/Football-Match-Outcome-Predictor/project/baseline.joblib")
+        load(f"/home/jason2001/Football-Match-Outcome-Predictor/project/{name}.joblib")
 
 
 if __name__ == "__main__":
     joblib = JoblibSave()
     model_class = Model()
     model = model_class.random_forest_classifier(2021)
-    joblib.dump_model(model)
+    joblib.dump_model(model, "baseline")
+    joblib.dump_model(model, "model")
