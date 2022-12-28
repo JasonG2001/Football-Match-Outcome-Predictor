@@ -43,4 +43,11 @@ class NewResult:
         df: Type[pd.DataFrame] = pd.concat(all_data)
         
         return df
+
+
+    def save_to_csv(self, dataframe: Type[pd.DataFrame]):
+
+        dataframe.to_csv("/home/jason2001/Football-Match-Outcome-Predictor/project/results_for_prediction.csv", 
+        index=False)
+
         
