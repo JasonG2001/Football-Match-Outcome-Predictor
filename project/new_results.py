@@ -1,12 +1,14 @@
+from result_finder import ResultFinder
+from typing import Dict, List, Type
 import os
 import pandas as pd
 import pickle
-from typing import Dict, List, Type
 
 class NewResult:
 
     def __init__(self) -> None:
-        pass
+        self.result_finder: ResultFinder = ResultFinder()
+
 
     def get_results(self, league: str, path: str) -> Type[pd.DataFrame]:
 
@@ -26,6 +28,19 @@ class NewResult:
         
         df["Home_Elo"]: List[int] = home_elo
         df["Away_Elo"]: List[int] = away_elo
+        
+        return df
+
+
+    def combine_all_dataframes(self, path: str) -> type[pd.DataFrame]:
+
+        leagues: List[str] = os.listdir(path)
+        leagues: List[str] = [league for league in leagues if league != "previous_elo_dict.pkl"]
+        all_data: List[Type[pd.DataFrame]] = []
+
+        all_data: List[Type[pd.DataFrame]] = [self.get_results(league, path) for league in leagues]
+        
+        df: Type[pd.DataFrame] = pd.concat(all_data)
         
         return df
         
