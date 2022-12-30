@@ -199,9 +199,19 @@ class NewResult:
         return df
 
 
-    def save_to_csv(self, dataframe: Type[pd.DataFrame], name: str) -> None:
+    def clean_dataframe(self, df: Type[pd.DataFrame]) -> Type[pd.DataFrame]:
 
-        dataframe.to_csv(f"/home/jason2001/Football-Match-Outcome-Predictor/project/{name}.csv", 
+        df["Home_Team_Code"]: List[int] = df["Home_Team"].astype("category").cat.codes
+        df["Away_Team_Code"]: List[int] = df["Away_Team"].astype("category").cat.codes
+        df["Home_Team_Result"]: List[int] = df["Home_Result"].astype("category").cat.codes
+        df["Away_Team_Result"]: List[int] = df["Away_Result"].astype("category").cat.codes
+
+        return df
+
+
+    def save_to_csv(self, df: Type[pd.DataFrame], name: str) -> None:
+
+        df.to_csv(f"/home/jason2001/Football-Match-Outcome-Predictor/project/{name}.csv", 
         index=False)
 
         
