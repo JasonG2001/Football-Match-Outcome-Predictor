@@ -169,7 +169,7 @@ class NewResult:
 
             else:
                 home_result.append("draw")
-                home_result.append("draw")
+                away_result.append("draw")
 
         return home_result, away_result
 
@@ -180,17 +180,23 @@ class NewResult:
         cumulative_home_wins, cumulative_away_wins, cumulative_home_losses, cumulative_away_losses, \
             cumulative_home_draws, cumulative_away_draws = self.get_cumulative_home_and_away_wins(df)
         current_home_streak, current_away_streak = self.get_current_streak(df)
+        home_result, away_result = self.get_results(df)
 
-        df["Current_Home_Goals"] = cumulative_home_goals
-        df["Current_Away_Goals"] = cumulative_away_goals
-        df["Current_Home_Wins"] = cumulative_home_wins
-        df["Current_Away_Wins"] = cumulative_away_wins
-        df["Current_Home_Losses"] = cumulative_home_losses
-        df["Current_Away_Losses"] = cumulative_away_losses
-        df["Current_Home_Draws"] = cumulative_home_draws
-        df["Current_Away_Draws"] = cumulative_away_draws
-        df["Current_Home_Streak"] = current_home_streak
-        df["Current_Away_Streak"] = current_away_streak
+        df["Current_Home_Goals"]: List[int] = cumulative_home_goals
+        df["Current_Away_Goals"]: List[int] = cumulative_away_goals
+        df["Current_Home_Wins"]: List[int] = cumulative_home_wins
+        df["Current_Away_Wins"]: List[int] = cumulative_away_wins
+        df["Current_Home_Losses"]: List[int] = cumulative_home_losses
+        df["Current_Away_Losses"]: List[int] = cumulative_away_losses
+        df["Current_Home_Draws"]:List[int] = cumulative_home_draws
+        df["Current_Away_Draws"]: List[int] = cumulative_away_draws
+        df["Current_Home_Streak"]: List[int] = current_home_streak
+        df["Current_Away_Streak"]: List[int] = current_away_streak
+
+        df["Home_Result"]: List[str] = home_result
+        df["Away_Result"]: List[str] = away_result
+
+        return df
 
 
     def save_to_csv(self, dataframe: Type[pd.DataFrame], name: str) -> None:
