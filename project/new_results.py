@@ -115,6 +115,40 @@ class NewResult:
             cumulative_home_draws, cumulative_away_draws
 
 
+    def get_current_streak(self, df: Type[pd.DataFrame]) -> List[int]:
+
+        current_home_streak: List[int] = []
+        current_away_streak: List[int] = []
+
+        df: Type[pd.DataFrame] = df.loc[:, ["Home_Team", "Away_Team", "Result"]]
+        current_streak: Dict[str,int] = defaultdict(int)
+
+        record: Type[pd.DataFrame]
+        for _, record in df.iterrows():
+            home_team: str = record.loc["Home_Team"]
+            away_team: str = record.loc["Away_Team"]
+
+            current_home_streak.append(current_streak[home_team])
+            current_away_streak.append(current_streak[away_team])
+
+            home_score: int = int(record.loc["Result"][self.INDEX_OF_HOME_TEAM_SCORE])
+            away_score: int = int(record.loc["Result"][self.INDEX_OF_AWAY_TEAM_SCORE])
+
+            if home_score > away_score:
+                current_streak[home_team] += 1
+                current_streak[away_team] = 0
+
+            elif home_score < away_score:
+                current_streak[away_team] += 1
+                current_streak[home_team] = 0
+
+            else:
+                current_streak[home_team] = 0
+                current_streak[away_team] = 0
+
+        return current_home_streak, current_away_streak
+
+
     def save_to_csv(self, dataframe: Type[pd.DataFrame]) -> None:
 
         dataframe.to_csv("/home/jason2001/Football-Match-Outcome-Predictor/project/results_for_prediction.csv", 
