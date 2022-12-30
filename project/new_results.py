@@ -149,9 +149,53 @@ class NewResult:
         return current_home_streak, current_away_streak
 
 
-    def save_to_csv(self, dataframe: Type[pd.DataFrame]) -> None:
+    def get_results(self, df: Type[pd.DataFrame]) -> List[str]:
 
-        dataframe.to_csv("/home/jason2001/Football-Match-Outcome-Predictor/project/results_for_prediction.csv", 
+        home_result: List[str] = []
+        away_result: List[str] = []
+
+        for result in df["Result"]:
+
+            home_score: int = int(result[self.INDEX_OF_HOME_TEAM_SCORE])
+            away_score: int = int(result[self.INDEX_OF_AWAY_TEAM_SCORE])
+
+            if home_score > away_score:
+                home_result.append("win")
+                away_result.append("lose")
+
+            elif home_score < away_score:
+                home_result.append("lose")
+                away_result.append("win")
+
+            else:
+                home_result.append("draw")
+                home_result.append("draw")
+
+        return home_result, away_result
+
+
+    def combine_features(self, df: Type[pd.DataFrame]) -> Type[pd.DataFrame]:
+
+        cumulative_home_goals, cumulative_away_goals = self.get_cumulative_home_and_away_goals(df)
+        cumulative_home_wins, cumulative_away_wins, cumulative_home_losses, cumulative_away_losses, \
+            cumulative_home_draws, cumulative_away_draws = self.get_cumulative_home_and_away_wins(df)
+        current_home_streak, current_away_streak = self.get_current_streak(df)
+
+        df["Current_Home_Goals"] = cumulative_home_goals
+        df["Current_Away_Goals"] = cumulative_away_goals
+        df["Current_Home_Wins"] = cumulative_home_wins
+        df["Current_Away_Wins"] = cumulative_away_wins
+        df["Current_Home_Losses"] = cumulative_home_losses
+        df["Current_Away_Losses"] = cumulative_away_losses
+        df["Current_Home_Draws"] = cumulative_home_draws
+        df["Current_Away_Draws"] = cumulative_away_draws
+        df["Current_Home_Streak"] = current_home_streak
+        df["Current_Away_Streak"] = current_away_streak
+
+
+    def save_to_csv(self, dataframe: Type[pd.DataFrame], name: str) -> None:
+
+        dataframe.to_csv(f"/home/jason2001/Football-Match-Outcome-Predictor/project/{name}.csv", 
         index=False)
 
         

@@ -164,7 +164,7 @@ class DataframeAnalysis:
         return current_home_streak, current_away_streak
 
         
-    def get_result(self, football_league: str, year: int) -> List[int]:
+    def get_result(self, football_league: str, year: int) -> List[str]:
 
         df: Type[pd.DataFrame] = self.get_dataframe(football_league, year).loc[:, ["Result"]]
 
