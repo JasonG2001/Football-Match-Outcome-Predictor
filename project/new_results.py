@@ -1,3 +1,4 @@
+from collections import defaultdict
 from result_finder import ResultFinder
 from typing import Dict, List, Type
 import os
@@ -8,6 +9,8 @@ class NewResult:
 
     def __init__(self) -> None:
         self.result_finder: ResultFinder = ResultFinder()
+        self.INDEX_OF_HOME_TEAM_SCORE: int = 0
+        self.INDEX_OF_AWAY_TEAM_SCORE: int = 2
 
 
     def get_results(self, league: str, path: str) -> Type[pd.DataFrame]:
@@ -43,6 +46,27 @@ class NewResult:
         df: Type[pd.DataFrame] = pd.concat(all_data)
         
         return df.drop(df.columns[0], axis=1)
+
+
+    def get_cumulative_home_and_away_goals(self, df: Type[pd.DataFrame]) -> List[int]:
+
+        cumulative_home_goals: List[int] = []
+        cumulative_away_goals: List[int] = []
+
+        df: Type[pd.DataFrame] = df.loc[:, ["Home_Team", "Away_Team", "Result"]]
+        goals: Dict[str,int] = defaultdict(int)
+
+        for i, record in df.iterrows():
+            home_team: str = record.loc["Home_Team"]
+            away_team: str = record.loc["Away_Team"]
+
+            cumulative_home_goals.append(goals[home_team])
+            cumulative_away_goals.append(goals[away_team])
+
+            goals[home_team] += int(record.loc["Result"][self.INDEX_OF_HOME_TEAM_SCORE])
+            goals[away_team] += int(record.loc["Result"][self.INDEX_OF_AWAY_TEAM_SCORE])
+
+        return cumulative_home_goals, cumulative_away_goals
 
 
     def save_to_csv(self, dataframe: Type[pd.DataFrame]) -> None:
