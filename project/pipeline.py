@@ -186,15 +186,4 @@ class Model:
         acc: float = accuracy_score(y_test, y_pred)
 
         return pipeline, acc # 0.4, 0.42
-
-
-if __name__ == "__main__":
-
-    model = Model()
-    print("random forest:", model.random_forest_classifier(2021))
-    print("logistic regressor:", model.logistic_regressor(2021))
-    print("knn:", model.k_nearest_neighbour(2021))
-    print("decision tree:", model.decision_tree_classifier(2021))
-    print("gaussiannd:", model.gaussiannb(2021))
-    print("svm:", model.svm(2021))
     
