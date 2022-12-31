@@ -189,13 +189,3 @@ class DataframeAnalysis:
                 away_results.append("draw")
 
         return home_results, away_results
-
-
-if __name__ == "__main__":
-
-    dataframe = DataframeAnalysis()
-    print(dataframe.get_home_and_away_elos("serie_b", 2021))
-    print(dataframe.get_home_and_away_goals_so_far("serie_b", 2021))
-    print(dataframe.get_wins_losses_draws_so_far("eredivisie", 2021))
-    print(dataframe.get_current_streak("bundesliga", 2021))
-    print(dataframe.get_result("bundesliga", 2021))

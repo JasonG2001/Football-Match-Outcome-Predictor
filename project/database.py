@@ -65,20 +65,4 @@ class Database:
         sql_code: str = """SELECT * FROM football_data"""
 
         self.execute_to_postgres(host, user, password, dbname, port, sql_code)
-
-
-
-if __name__ == "__main__":
-
-    HOST: str = "football.cqav9sfxcwg5.eu-west-2.rds.amazonaws.com"
-    USER: str = "postgres"
-    PASSWORD: str = "Jguan2001"
-    DBNAME: str = "postgres"
-    PORT: int = 5432
-
-    database = Database("premier_league")
-    database.create_table(HOST, USER, PASSWORD, DBNAME, PORT)
-    database.upload_to_table(HOST, USER, PASSWORD, DBNAME, PORT)
-    
-
     

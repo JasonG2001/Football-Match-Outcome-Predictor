@@ -14,9 +14,3 @@ class MakeCSV:
         df: Type[pd.DataFrame] = self.football_dataframe.clean_dataframe(football_league, year)
 
         df.to_csv(fr"/home/jason2001/Football-Match-Outcome-Predictor/project/{football_league}_{year}_cleaned_dataset.csv")
-
-
-if __name__ == "__main__":
-
-    csv = MakeCSV()
-    csv.convert_to_csv("premier_league", 2021)

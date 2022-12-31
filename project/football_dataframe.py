@@ -49,10 +49,3 @@ class FootballDataframe:
         df["Away_Result_Code"]: List[int] = df["Away_Result"].astype("category").cat.codes
 
         return df
-
-
-if __name__ == "__main__":
-
-    football_dataframe = FootballDataframe()
-    print(football_dataframe.make_dataframe("premier_league", 2021))
-    print(football_dataframe.clean_dataframe("premier_league", 2021))
