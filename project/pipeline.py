@@ -58,7 +58,7 @@ class Model:
         y_pred = pipeline.predict(X_test)
         acc: float = accuracy_score(y_test, y_pred)
 
-        return pipeline, acc # 0.4, 0.5
+        return pipeline, acc # 0.4, 0.6
 
 
     def logistic_regressor(self, year: int) -> Union[float,Pipeline]:

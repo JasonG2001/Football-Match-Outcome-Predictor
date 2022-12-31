@@ -12,12 +12,11 @@ class NewResult:
 
     def __init__(self) -> None:
         self.result_finder: ResultFinder = ResultFinder()
-        self.rfc_model: Model = Model().random_forest_classifier(2021)
         self.INDEX_OF_HOME_TEAM_SCORE: int = 0
         self.INDEX_OF_AWAY_TEAM_SCORE: int = 2
 
 
-    def get_results(self, league: str, path: str) -> Type[pd.DataFrame]:
+    def get_file_results(self, league: str, path: str) -> Type[pd.DataFrame]:
 
         os.chdir(path)
         os.chdir(league)
@@ -45,7 +44,7 @@ class NewResult:
         leagues: List[str] = [league for league in leagues if league != "previous_elo_dict.pkl"]
         all_data: List[Type[pd.DataFrame]] = []
 
-        all_data: List[Type[pd.DataFrame]] = [self.get_results(league, path) for league in leagues]
+        all_data: List[Type[pd.DataFrame]] = [self.get_file_results(league, path) for league in leagues]
         
         df: Type[pd.DataFrame] = pd.concat(all_data)
         
