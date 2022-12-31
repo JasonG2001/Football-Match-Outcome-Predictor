@@ -1,5 +1,8 @@
 from collections import defaultdict
+from pipeline import Model
 from result_finder import ResultFinder
+from sklearn.metrics import accuracy_score
+from sklearn.pipeline import Pipeline
 from typing import Dict, List, Type
 import os
 import pandas as pd
@@ -9,6 +12,7 @@ class NewResult:
 
     def __init__(self) -> None:
         self.result_finder: ResultFinder = ResultFinder()
+        self.rfc_model: Model = Model().random_forest_classifier(2021)
         self.INDEX_OF_HOME_TEAM_SCORE: int = 0
         self.INDEX_OF_AWAY_TEAM_SCORE: int = 2
 
@@ -29,8 +33,8 @@ class NewResult:
             home_elo.append(int(elo[link]["Elo_home"]))
             away_elo.append(int(elo[link]["Elo_away"]))
         
-        df["Home_Elo"]: List[int] = home_elo
-        df["Away_Elo"]: List[int] = away_elo
+        df["Home_Elos"]: List[int] = home_elo
+        df["Away_Elos"]: List[int] = away_elo
         
         return df
 
@@ -182,16 +186,16 @@ class NewResult:
         current_home_streak, current_away_streak = self.get_current_streak(df)
         home_result, away_result = self.get_results(df)
 
-        df["Current_Home_Goals"]: List[int] = cumulative_home_goals
-        df["Current_Away_Goals"]: List[int] = cumulative_away_goals
-        df["Current_Home_Wins"]: List[int] = cumulative_home_wins
-        df["Current_Away_Wins"]: List[int] = cumulative_away_wins
-        df["Current_Home_Losses"]: List[int] = cumulative_home_losses
-        df["Current_Away_Losses"]: List[int] = cumulative_away_losses
-        df["Current_Home_Draws"]:List[int] = cumulative_home_draws
-        df["Current_Away_Draws"]: List[int] = cumulative_away_draws
-        df["Current_Home_Streak"]: List[int] = current_home_streak
-        df["Current_Away_Streak"]: List[int] = current_away_streak
+        df["Home_Goals"]: List[int] = cumulative_home_goals
+        df["Away_Goals"]: List[int] = cumulative_away_goals
+        df["Home_Wins"]: List[int] = cumulative_home_wins
+        df["Away_Wins"]: List[int] = cumulative_away_wins
+        df["Home_Losses"]: List[int] = cumulative_home_losses
+        df["Away_Losses"]: List[int] = cumulative_away_losses
+        df["Home_Draws"]:List[int] = cumulative_home_draws
+        df["Away_Draws"]: List[int] = cumulative_away_draws
+        df["Home_Streak"]: List[int] = current_home_streak
+        df["Away_Streak"]: List[int] = current_away_streak
 
         df["Home_Result"]: List[str] = home_result
         df["Away_Result"]: List[str] = away_result
@@ -203,10 +207,25 @@ class NewResult:
 
         df["Home_Team_Code"]: List[int] = df["Home_Team"].astype("category").cat.codes
         df["Away_Team_Code"]: List[int] = df["Away_Team"].astype("category").cat.codes
-        df["Home_Team_Result"]: List[int] = df["Home_Result"].astype("category").cat.codes
-        df["Away_Team_Result"]: List[int] = df["Away_Result"].astype("category").cat.codes
+        df["Home_Result_Code"]: List[int] = df["Home_Result"].astype("category").cat.codes
+        df["Away_Result_Code"]: List[int] = df["Away_Result"].astype("category").cat.codes
 
         return df
+
+
+    def make_prediction(self, df: Type[pd.DataFrame], model: Pipeline) -> float:
+
+        X = df.drop(["Home_Team", "Away_Team", "Home_Result", "Away_Result", "Home_Result_Code", 
+            "Away_Result_Code", "Home_Team_Code", "Away_Team_Code", "Home_Draws", "Away_Draws", 
+                "Link", "Result", "League"], axis=1)
+
+        y = df["Home_Result_Code"]
+
+        y_pred = model.predict(X)
+
+        acc: float = accuracy_score(y, y_pred)
+
+        return acc
 
 
     def save_to_csv(self, df: Type[pd.DataFrame], name: str) -> None:
